@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home Page</title>
+    <style>
+        .mainnav {
+            background-color: #0C0C1C;
+            overflow: hidden;
+            margin-left: 50px;
+            display: inline-block;
+        }
+
+        .nav{
+            float: left;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px 40px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav:hover {
+            background-color: #504F4F;
+            color: #FFFFFF;
+        }
+        #buttons {
+            background-color: #D49FE7;
+            border-radius: 5px;
+            margin-top: 8px;
+            padding: 10px 35px;
+            font-weight: bolder;
+            font-size: 18px;
+        }
+
+        .space {
+            width: 20px;
+            height: auto;
+            display: inline-block;
+        }
+
+        .navi {
+            float: left;
+        }
+
+        .space2 {
+            width: 20px;
+            height: auto;
+            display: inline-block;
+        }
+
+        .create {
+            background-color: #D49FE7;
+            width: 300px;
+            border-radius: 5px;
+            padding: 10px 35px;
+            font-weight: bolder;
+            font-size: 18px;
+            margin-left: 200px;
+            text-align: left;
+        }
+
+        .box1 {
+            float: left;
+        }
+
+        .box2 {
+            width: 400px;
+            height: 280px;
+            background-color: #D49FE7;
+            margin-left: 700px;
+            border-radius: 0px 10px 10px 0px;
+            margin-top: 20px;
+        }
+
+        .side {
+            float: left;
+        }
+
+        .text1 {
+            color: #000000;
+            font-weight: bolder;
+            margin-left: 30px;
+            margin-top: 60px;
+            font-size: 25px;
+        }
+
+        .topic {
+            color: #000000;
+            font-weight: bolder;
+            margin-top: 20px;
+            margin-left: 20px;
+            font-size: 40px;
+        }
+
+        .circle {
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+        }
+
+        .small_circle {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin-left: 100px;
+        }
+
+        .box3 {
+            float: left;
+        }
+
+        .box4 {
+            float: left;
+        }
+    </style>
+    <script language="JavaScript" src="voter/js/user.js">
+    </script>
+</head>
+
+
+<body>
+    <div style="background-color: #0C0C1C; height:380px ;">
+        <div class="mainnav">
+            <div class="navi" style="margin-top: 8px;"><img src="assets/logoo.jpeg" style="height:40px ;"></div>
+            <div class="space"></div>
+            <div class="navi">
+                <a class="nav" href="homepage.html" target="_blank">Home</a>                
+                <a class="nav"href="services.html" target="_blank">Services</a>
+                <a class="nav"href="contact.html">Contact</a>
+                <a class="but"href="logbutt.html"><button id="buttons" style="margin-left:250px ;">LogIn</button></a>
+                <div class="space"></div>
+                <a class="but"href="regbutt.html"><button id="buttons">SignUp</button></a>
+            </div>
+
+        </div>
+        <div style="margin:0;">
+            <div class="box1">
+                <h2 style="color:#FFFFFF ; margin-left: 200px;">EASY, SECURE ONLINE VOTING</h2>
+                <p style="color:#FFFFFF ; margin-left: 200px; font-size: large;">Create an easy, effective and  
+                    <br>
+                    secure election of your own wish and let  <br>
+                    your voters vote from any location <br>
+                    and from any device</p>
+                <button class="create">Create An Election </button>
+            </div>
+
+            <div class="box2" class="box1">
+                <div class="side">
+                    <img src="assets/main_page.JPG" width="250px" height="200px">
+                    <p class="topic"> Electoral Poll</p>
+                </div>
+                <div class="side">
+                    <p class="text1">We <br>
+                        got your<br>
+                        back! <br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: #D49FE7; height: 400px; position: relative; ">
+        <div style="height: 30px;"></div>
+        <div style="position: absolute; margin-left: 300px; ">
+            <div style="padding: 8px; background-color: #0C0C1C; height: 90px; width: 800px; ">
+
+                <div class="box3">
+                    <img src=assets/admin.jpg class="circle" style="margin-left: 30px;">
+                </div>
+
+                <div class="box3" style="margin-left:50px ; top: 50px;">
+                    <p style="color: #FFFFFF; font-size: 22px; font-weight: bold; ">Administrator</p>
+                    <p style="color:#FFFFFF; font-size: 18px; ">Create an election poll of his own wish</p>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <div style="padding: 8px; background-color: #0C0C1C; height: 90px; width: 800px;  ">
+
+                <div class="box4">
+                    <img src=assets/voter.jpg class="circle" style="margin-left: 30px;">
+                </div>
+
+                <div class="box4" style="margin-left:50px ; top: 50px;">
+                    <p style="color: #FFFFFF; font-size: 22px; font-weight: bold; ">Voter</p>
+                    <p style="color:#FFFFFF; font-size: 18px; ">Vote from anywhere</p>
+                </div>
+            </div>
+
+
+            <div style="height: 30px;"></div>
+
+            <div class="footer" style="margin-left: 150px;">
+                <img src="assets/facebook.png" class="small_circle">
+                <img src="assets/instagram.jpg" class="small_circle">
+                <img src="assets/twitter.png" class="small_circle">
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</body>
+
+</html>
