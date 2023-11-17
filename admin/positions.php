@@ -1,52 +1,114 @@
 <?php
 session_start();
 require('../connection.php');
-//If your session isn't valid, it returns you to the login screen for protection
+//If the sesion is not valid, it will send you back to the login screen
 if(empty($_SESSION['admin_id'])){
  header("location:access-denied.php");
 }
-//retrive positions from the tbpositions table
+//This is to get all the positions from the tbPositions table
 $result=mysqli_query($con, "SELECT * FROM tbPositions");
 if (mysqli_num_rows($result)<1){
     $result = null;
 }
 ?>
 <?php
-// inserting sql query
+//inserting positions
 if (isset($_POST['Submit']))
 {
 
-$newPosition = addslashes( $_POST['position'] ); //prevents types of SQL injection
+$newPosition = addslashes( $_POST['position'] ); //prevents SQL injection
+//setting the starting and ending date of the position elections
+$starting_date = mysqli_real_escape_string($con, $_POST['starting_date']);
+$ending_date = mysqli_real_escape_string($con, $_POST['ending_date']);
+$inserted_on = date("Y-m-d");
 
-$sql = mysqli_query($con, "INSERT INTO tbpositions (position_name) VALUES ('$newPosition')");
+        $date1=date_create($inserted_on);
+        $date2=date_create($starting_date);
+        $diff=date_diff($date1,$date2);
+        ;
+        
+        //setting whether the election is active or inactive
+        if((int)$diff->format("%R%a") > 0)
+        {
+            $status = "InActive";
+        }else {
+            $status = "Active";
+        }
 
-// redirect back to positions
- header("Location: positions.php");
+$sql = mysqli_query($con, "INSERT INTO tbpositions (position_name,starting_date, ending_date, status, inserted_on) VALUES ('$newPosition', '$starting_date', '$ending_date', '$status', '$inserted_on')");
+
+// go to positions page
+header("Location: positions.php");
 }
 ?>
+
+<?php 
+   
+   require('../connection.php');
+    $fetchingElections = mysqli_query($con, "SELECT * FROM tbpositions") OR die(mysqli_error($con));
+    while($data = mysqli_fetch_assoc($fetchingElections))
+    {
+        $stating_date = $data['starting_date'];
+        $ending_date = $data['ending_date'];
+        $curr_date = date("Y-m-d");
+        $position_id = $data['position_id'];
+        $status = $data['status'];
+
+        //setting if the election date is expired    
+
+        if($status == "Active")
+        {
+            $date1=date_create($curr_date);
+            $date2=date_create($ending_date);
+            $diff=date_diff($date1,$date2);
+            
+            if((int)$diff->format("%R%a") < 0)
+            {
+                // Updating election status 
+                mysqli_query($con, "UPDATE tbpositions SET status = 'Expired' WHERE position_id = '". $position_id ."'") OR die(mysqli_error($con));
+            }
+        }
+        //setting inactive elections to active according to starting date
+        else if($status == "InActive")
+        {
+            $date1=date_create($curr_date);
+            $date2=date_create($stating_date);
+            $diff=date_diff($date1,$date2);
+            
+
+            if((int)$diff->format("%R%a") <= 0)
+            {
+                
+                mysqli_query($con, "UPDATE tbpositions SET status = 'Active' WHERE position_id = '". $position_id ."'") OR die(mysqli_error($con));
+            }
+        }
+        
+
+    }
+?>
+
+
 <?php
-// deleting sql query
-// check if the 'id' variable is set in URL
+// deleting a position
  if (isset($_GET['id']))
  {
  // get id value
  $id = $_GET['id'];
  
- // delete the entry
+ //sql query to delete the position
  $result = mysqli_query($con, "DELETE FROM tbPositions WHERE position_id='$id'");
  
- // redirect back to positions
+ // comeback again to the positions page 
  header("Location: positions.php");
  }
  else
- // do nothing
+
     
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Administration Control Panel:Positions</title>
+<title>Electoral Poll: Manage Positions</title>
 
 <script language="JavaScript" src="js/admin.js">
 </script>
@@ -78,7 +140,6 @@ $sql = mysqli_query($con, "INSERT INTO tbpositions (position_name) VALUES ('$new
     input{
       height:18px;
       width:240px;
-
     }
     .sidenav {
   height: 100%;
@@ -135,7 +196,14 @@ p{
   background-color:#FFFF;
   
 }
-
+footer{
+        background-color: #0C0C1C;
+        width: 100%;
+        text-align:center;
+        color:#FFFFFF;
+        display: inline-block;
+        margin-top:80px;
+      }
 
 .maintbl {
   border-collapse: collapse;
@@ -165,27 +233,44 @@ hr.line1{
 hr.line2{
   border-top: 2px solid #0C0C1C;
 }
+h1{
+color:#FFFF;
+}
+.line{
+float:left;
+}
+.hr1{
+  background-color: #0C0C1C;
+  height: 3px;
+}  
 
 </style>
 </head>
-<body >
+<body style="background-color: #B6AAAA;" >
 <div style="background-color: #0C0C1C;">
-
+<!--navigation bar-->
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="admin.php">Home</a>
-  <a href="positions.php">Manage Positions</a>
-  <a href="candidates.php">Manage Candidates</a>
-  <a href="refresh.php">Poll Results</a>
-  <a href="manage-admins.php">Manage Account</a>
-  <a href="change-pass.php">Change Password</a>
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+<a href="admin.php">Home</a>
+<a href="voters.php">Manage Voters</a>
+<a href="positions.php">Manage Positions</a>
+<a href="candidates.php">Manage Candidates</a>
+<a href="refresh.php">Poll Results</a>
+<a href="manage-admins.php">Manage Account</a>
+<a href="change-pass.php">Change Password</a>
 </div>
-<span style="font-size:30px;cursor:pointer;color:#FFFF" onclick="openNav()">&#9776; </span>
+<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+<?php
+//fetching the details of the admin who is logged in 
+$query= mysqli_query($con,"SELECT * FROM tbadministrators WHERE admin_id ='$_SESSION[admin_id]'") or die (mysqli_error());
+$fetch = mysqli_fetch_array($query);
+// Displaying the name of the admin whose logged , in the top bar
+      echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+?>
 
-<a href="logout.php"><button id="buttons" style="margin-left:1000px ;">Log Out</button></a>
-
-</div>
+<!--logout button-->
+<a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
 
 </div>
 <div style="background-color: #B6AAAA; height: 800px; position: relative;">
@@ -195,40 +280,63 @@ hr.line2{
 <form name="fmPositions" id="fmPositions" action="positions.php" method="post" onsubmit="return positionValidate(this)">
 <tr>
     <td><p>Position Name<p></td>
-    <td><input type="text" name="position" /></td>
-    <td><button type="submit" name="Submit" id="addbutton">Add</button></td>
+    <td><input type="text" name="position" required/></td>
+    
+</tr>
+<tr>
+    <td><p>Starting Date<p></td>
+    <td><input type="Date" name="starting_date" required/></td>    
+</tr>
+<tr>
+    <td><p>Ending Date<p></td>
+    <td><input type="Date" name="ending_date" required/></td>    
+</tr>
+<tr>
+<td><button type="submit" name="Submit" id="addbutton">Add</button></td>   
 </tr>
 </table>
 
-<hr class="line1">
+<hr class="hr1">
 
-<table class="maintbl" width="460px" align="center">
+<table class="maintbl" width="760px" align="center">
 <CAPTION><p class="topic">POSITION LIST</p></CAPTION>
 <tr>
 
 <th>Position Name</th>
 <th>Action</th>
+<th>Starting Date</th>
+<th>Ending Date</th>
+<th>Status</th>
 </tr>
 
 <?php
 //loop through all table rows
 $inc=1;
+if ($result && mysqli_num_rows($result) > 0) {
 while ($row=mysqli_fetch_array($result)){
 echo "<tr>";
 echo "<td>" . $row['position_name']."</td>";
 echo '<td ><a href="positions.php?id=' . $row['position_id'] . '"><button class="delete"><img src="assets/bin.png" height="20px" width="30px" style="margin-right:10px"; />Delete Position</a></button></td>';
+echo "<td>" . $row['starting_date']."</td>";
+echo "<td>" . $row['ending_date']."</td>";
+echo "<td>" . $row['status']."</td>";
 echo "</tr>";
 $inc++;
 }
 
 mysqli_free_result($result);
+}
 mysqli_close($con);
 ?>
 </table>
-<br>
-<hr class="line2">
-</div>
 
+<br><br>
+<hr class="hr1">
+<footer>
+    <p>Created by Electoral Poll. © 2023</p>
+  </footer>        
+    
+</div>
 
 </div>
 <script>
@@ -239,6 +347,8 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+
+
 </script>
 
 </body>

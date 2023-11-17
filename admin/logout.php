@@ -58,7 +58,7 @@
                     <div class="form">
                     <p style="margin-top:80px">You have been successfully  <br><br>
                     logged out of your account.<br><br>
-                    Click here to <a href="login.html">Login</a><br><br>
+                    Click here to <a href=<?php header("Location: positions.php");?>>Login</a><br><br>
                        or return to <a href="../homepage.html">Home</a><br><br></p>
 
                     </div>
@@ -69,7 +69,7 @@
 </div>
 
 </div>
-<?
+<?php
 session_start();
 session_destroy();
 ?>

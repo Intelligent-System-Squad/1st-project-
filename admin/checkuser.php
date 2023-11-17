@@ -7,7 +7,7 @@ require('../connection.php');
 $q="SELECT * FROM tbadministrators WHERE email='$email'";
 $result=mysqli_query($con,$q);
 if(mysqli_num_rows($result)){
-    echo"email already Registerd Please Try Another";
+    echo"This email has already been registered. Please try another";
 }else{
     echo"";
 }

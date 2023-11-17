@@ -1,4 +1,6 @@
-//function to handle login-form validation
+
+
+  //function to validate login form
 function loginValidate(loginForm){
 
 var validationVerified=true;
@@ -270,6 +272,44 @@ alert(okayMessage);
 }
 return validationVerified;
 }
+
+//validate voter form
+function voterValidate(voterForm){
+
+    var validationVerified=true;
+    var errorMessage="";
+    var okayMessage="click OK to add new voter";
+    
+    if (voterForm.fname.value == "")
+    {
+    errorMessage+="Please enter the voter first name!\n";
+    validationVerified=false;
+    }
+    if (voterForm.lname.value == "")
+    {
+    errorMessage+="Please enter the voter last name!\n";
+    validationVerified=false;
+    }
+    if (voterForm.email.value == "")
+    {
+    errorMessage+="Please enter the voter email!\n";
+    validationVerified=false;
+    }
+    if (voterForm.password.value == "")
+    {
+    errorMessage+="Please enter the voter password!\n";
+    validationVerified=false;
+    }
+    if(!validationVerified)
+    {
+    alert(errorMessage);
+    }
+    if(validationVerified)
+    {
+    alert(okayMessage);
+    }
+    return validationVerified;
+    } 
 
 //validate candidate form
 function candidateValidate(candidateForm){

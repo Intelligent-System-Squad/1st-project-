@@ -2,6 +2,38 @@
 session_start();
 require('../connection.php');
 ?>
+<?php
+//This check whether your session is valid, if not asks you to login
+if(empty($_SESSION['admin_id'])){
+ header("location:access-denied.php");
+}
+
+//fetching the details of the admin who is logged in 
+$result=mysqli_query($con, "SELECT * FROM tbadministrators WHERE admin_id = '$_SESSION[admin_id]'");
+if (mysqli_num_rows($result)<1){
+    $result = null;
+}
+$row = mysqli_fetch_array($result);
+if($row)
+ {
+ // get data from db
+ $adminId = $row['admin_id'];
+ $firstName = $row['first_name'];
+ $lastName = $row['last_name'];
+ $email = $row['email'];
+ }
+
+ 
+if (isset($_GET['id']) && isset($_POST['update']))
+{
+$myId = addslashes( $_GET['id']);
+$myFirstName = addslashes( $_POST['firstname'] ); //prevents types of SQL injection
+$myLastName = addslashes( $_POST['lastname'] ); //prevents types of SQL injection
+$myEmail = $_POST['email'];
+
+$sql = mysqli_query($con, "UPDATE tbAdministrators SET first_name='$myFirstName', last_name='$myLastName', email='$myEmail' WHERE admin_id = '$myId'" );
+}
+?>
 <html><head>
 <style>
     .mainnav {
@@ -150,11 +182,12 @@ h1{
 <body> 
 <body >
 <div style="background-color: #0C0C1C;">
-
+<!--navigation bar-->
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="admin.php">Home</a>
+  <a href="voters.php">Manage Voters</a>
   <a href="positions.php">Manage Positions</a>
   <a href="candidates.php">Manage Candidates</a>
   <a href="refresh.php">Poll Results</a>
@@ -162,14 +195,16 @@ h1{
   <a href="change-pass.php">Change Password</a>
 </div>
 <span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+
 <?php
+//fetching the details of the admin who is logged in 
   $query= mysqli_query($con,"SELECT * FROM tbadministrators WHERE admin_id ='$_SESSION[admin_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
- 
-				echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+  // Displaying the name of the admin whose logged , in the top bar 
+  echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
   ?>
 
- 
+<!--logout button--> 
 <a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
 
 </div>
@@ -177,38 +212,7 @@ h1{
 </div>
 
 
-<?php
-//If your session isn't valid, it returns you to the login screen for protection
-if(empty($_SESSION['admin_id'])){
- header("location:access-denied.php");
-}
 
-//fetch data for update file
-$result=mysqli_query($con, "SELECT * FROM tbadministrators WHERE admin_id = '$_SESSION[admin_id]'");
-if (mysqli_num_rows($result)<1){
-    $result = null;
-}
-$row = mysqli_fetch_array($result);
-if($row)
- {
- // get data from db
- $adminId = $row['admin_id'];
- $firstName = $row['first_name'];
- $lastName = $row['last_name'];
- $email = $row['email'];
- }
-
-//Process
-if (isset($_GET['id']) && isset($_POST['update']))
-{
-$myId = addslashes( $_GET['id']);
-$myFirstName = addslashes( $_POST['firstname'] ); //prevents types of SQL injection
-$myLastName = addslashes( $_POST['lastname'] ); //prevents types of SQL injection
-$myEmail = $_POST['email'];
-
-$sql = mysqli_query($con, "UPDATE tbAdministrators SET first_name='$myFirstName', last_name='$myLastName', email='$myEmail' WHERE admin_id = '$myId'" );
-}
-?>
  <div style="background-color: #B6AAAA; height: 700px; position: relative;">
         
         

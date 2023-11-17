@@ -1,32 +1,65 @@
 <?php
 require('../connection.php');
-// retrieving candidate(s) results based on position
+// Getting the candidate details for the selected position
 if (isset($_POST['Submit'])){   
-/*
-$resulta = mysqli_query($con, "SELECT * FROM tbCandidates where candidate_name='Luis Nani'");
 
-while($row1 = mysqli_fetch_array($resulta))
-  {
-  $candidate_1=$row1['candidate_cvotes'];
-  }
-  */
   $position = addslashes( $_POST['position'] );
   
-    $results = mysqli_query($con, "SELECT * FROM tbCandidates where candidate_position='$position'");
+    $results = mysqli_query($con, "SELECT * FROM tbCandidates where candidate_position='$position' ORDER BY candidate_cvotes DESC");
 
-    $row = mysqli_fetch_array($results); // for the first candidate
-   
-}
     
-        // do nothing
-?> 
+   
+}  
+
+if (isset($_POST['export'])){   
+
+  $position = addslashes( $_POST['position'] );
+  
+    $details = mysqli_query($con, "SELECT * FROM tbCandidates where candidate_position='$position' ORDER BY candidate_cvotes DESC");
+
+    
+   
+}    
+if (isset($_POST['export'])) {
+  $position = addslashes($_POST['position']);
+  $details = mysqli_query($con, "SELECT * FROM tbCandidates where candidate_position='$position' ORDER BY candidate_cvotes DESC");
+
+  // Set the header for Excel file
+  header('Content-Type: application/vnd.ms-excel');
+  header('Content-Disposition: attachment;filename="results.xls"');
+  header('Cache-Control: max-age=0');
+
+  echo "<table border='1'>";
+  echo "<tr>
+          <th>Candidate Name</th>
+          <th>Candidate Position</th>
+          <th>Candidate Photo</th>
+          <th>Votes</th>
+        </tr>";
+
+  while ($candidate = mysqli_fetch_array($details)) {
+      echo "<tr>";
+      echo "<td>" . $candidate['candidate_name'] . "</td>";
+      echo "<td>" . $candidate['candidate_position'] . "</td>";
+
+      // Embed image as base64
+      echo '<td><img src="img/' . $candidate["image"] . '" width="100" height="80" title="' . $candidate['image'] . '"></td>';
+
+      echo "<td>" . $candidate['candidate_cvotes'] . "</td>";
+      echo "</tr>";
+  }
+
+  echo "</table>";
+  exit();
+}
+?>
 <?php
-// retrieving positions sql query
+// sql query to get all the positions
 $positions=mysqli_query($con, "SELECT * FROM tbPositions");
 ?>
 <?php
 session_start();
-//If your session isn't valid, it returns you to the login screen for protection
+//It will go back to the login page and avoids access if the session is not valid
 if(empty($_SESSION['admin_id'])){
  header("location:access-denied.php");
 }
@@ -63,7 +96,17 @@ if(empty($_SESSION['admin_id'])){
   transition: 0.5s;
   padding-top: 60px;
 }
-
+.topic{
+  font-size:20px;
+  font-weight:bold;
+  background-color:#504F4F;
+  color:#FFFF;
+  
+}
+.labels{
+  font-size:18px;
+  font-weight:bold;
+}
 .sidenav a {
   padding: 8px 8px 20px 32px;
   text-decoration: none;
@@ -103,6 +146,14 @@ h1{
             font-weight: bolder;
             font-size: 18px;
         }
+        #addbutton{
+        background-color: #504F4F;
+        border-radius: 5px;     
+        padding: 6px 25px;
+        font-weight: bold;
+        font-size: 14px;
+        color:#FFFF;
+      }
 
         .space {
             width: 20px;
@@ -129,10 +180,29 @@ h1{
   padding: 10px;
   border: 1px solid #504F4F;
 }
-      </style>
+.hr1{
+  background-color: #0C0C1C;
+  height: 3px;
+} 
+footer{
+        background-color: #0C0C1C;
+        width: 100%;
+        text-align:center;
+        color:#FFFFFF;
+        display: inline-block;
+        margin-top:80px;
+      }
+.button-container{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  gap:30px;
+}
+</style>
 
 <script language="JavaScript" src="js/admin.js">
 </script>
+<title> Electoral Poll: Poll Results </title>
 </head>
 <body style="background-color: #B6AAAA;"><div style="background-color: #0C0C1C;">
 
@@ -148,9 +218,10 @@ h1{
 </div>
 <span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
 <?php
+//sql query to retrieve admin details of the admin who has logged in
   $query= mysqli_query($con,"SELECT * FROM tbadministrators WHERE admin_id ='$_SESSION[admin_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
- 
+ // displaying the admin details 
 				echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
   ?>
 
@@ -162,47 +233,52 @@ h1{
 </div>
 <div style="position: relative;">
 <table width="420" align="center">
+  <br>
 <form name="fmNames" id="fmNames" method="post" action="refresh.php" onSubmit="return positionValidate(this)">
 <tr>
-    <td>Choose Position</td>
-    <td><SELECT name="position" id="position">
+    <td class="labels">Choose Position</td>
+    <td><SELECT class="labels" name="position" id="position">
     <OPTION VALUE="select">select
     <?php 
-    //loop through all table rows
+    //loop through all table rows and display the position names
     while ($row=mysqli_fetch_array($positions)){
     echo "<OPTION VALUE=$row[position_name]>$row[position_name]"; 
-    //mysql_free_result($positions_retrieved);
-    //mysql_close($link);
+    
     }
     ?>
     </SELECT></td>
-    <td><input type="submit" name="Submit" value="See Results" /></td>
+   
+   
 </tr>
-<tr>
-    <td>&nbsp;</td> 
-    <td>&nbsp;</td>
-</tr>
-</form> 
-</table>
+  </table>
+  <br>
+ <div class="button-container"> 
+ <center> <input class="sidebyside" type="submit" name="Submit" id="addbutton" value="See Results" /></center>
+ <center> <input class="sidebyside" type="submit" name="export" id="addbutton" value="export Results" onclick="return confirm('Are you sure you want to export the results?');" /></center>
+  </div>
+ 
+  </form>
+ 
+
+
 <table class="maintbl" width="700px" align="center">
-<CAPTION><p class="topic">AVAILABLE CANDIDATES</p></CAPTION>
+ <!-- display the results of the selected position--> 
+<CAPTION><p class="topic">Results</p></CAPTION>
 
 <th>Candidate Name</th>
 <th>Candidate Position</th>
 <th>Candidate Photo</th>
-<th>Action</th>
+<th>Votes</th>
 </tr>
 <?php if(isset($_POST['Submit'])){
-$inc=1;
-while ($row=mysqli_fetch_array($results)){
-    
+ $inc=1;
+while ($row=mysqli_fetch_array($results)){  
+      
 echo "<tr>";
-
 echo "<td>" . $row['candidate_name']."</td>";
 echo "<td>" . $row['candidate_position']."</td>";
 ?>
-<td> <img src="img/<?php echo $row["image"]; ?>" width = 100 height = 100 title="<?php echo $row['image']; ?>"> </td>
-
+<td> <img src="img/<?php echo $row["image"]; ?>" width = 100 height = 80 title="<?php echo $row['image'];?>"> </td>
 
 <?php
 echo "<td>". $row['candidate_cvotes']."</td>";
@@ -210,11 +286,21 @@ echo "</tr>";
 $inc++;
 }
 }
+
 ?>
+</table>
 
+<br><br>
+<hr class="hr1">
+<footer>
+    <p>Created by Electoral Poll. © 2023</p>
+  </footer>        
+    
+</div>
 
 </div>
-</div>
+
+
 <script>
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
