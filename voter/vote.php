@@ -2,44 +2,38 @@
 require('connection.php');
 
 session_start();
-//If your session isn't valid, it returns you to the login screen for protection
+//This checks whether session is valid or not.
 if(empty($_SESSION['member_id'])){
  header("location:access-denied.php");
 }
 
 ?>
 <?php
-// retrieving positions sql query
-$positions=mysqli_query($con, "SELECT * FROM tbPositions");
+// Getting all the positions where the status of the position is active. This means the voter can view only the active positions. 
+$positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'");
 ?> 
 <?php
-    // retrieval sql query
-// check if Submit is set in POST
+//This is used to check whether the button with name 'submit' is clicked.
  if (isset($_POST['Submit']))
  {
- // get position value
- $position = addslashes( $_POST['position'] ); //prevents types of SQL injection
+// gets the value of position selected by the voter.
+ $position = addslashes( $_POST['position'] ); 
  
- // retrieve based on position
+ // it get the data of the candidate whose position value matches the positon value which the voter selected.
  $result = mysqli_query($con,"SELECT * FROM tbCandidates WHERE candidate_position='$position'");
- // redirect back to vote
- //header("Location: vote.php");
- }
- else
- // do something
-  
+  }
+
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Simple PHP Polling System:Voting Page</title>
+<title>Current Polls - Electoral Poll</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;
       overflow: hidden;
-      margin-left: 10cm;
-      margin-left: 30px;
       display: inline-block;
+      width: 100%;
      
     }
     #buttons {
@@ -93,6 +87,7 @@ h1{
 }
 .line{
   float:left;
+  
 }
 #candidatebutton{
       background-color: #504F4F;
@@ -112,8 +107,6 @@ h1{
   margin-top: 40px;
   float:left;
  
- 
- 
 }
 
 .title {
@@ -132,46 +125,59 @@ h1{
   cursor: pointer;
   width: 100%;
   font-size: 18px;
-}
-            
+}           
 
 .topic{
-  font-size: 24px;
-  font-weight:bolder;
-  font-weight:bold;
-  background-color:#504F4F;
-  color:#FFFF;
-}
+      font-size:20px;
+      font-weight:bold;
+      background-color:#504F4F;
+      color:#FFFF;
+      
+    }
+.labels{
+    font-size:18px;
+    font-weight:bold;
+  }
 .boxxx{
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
-
+#propic{
+ justify:center;
+  margin-left: 200px;
+}
+#error{
+  font-weight: bold;
+}
+.hr1{
+      background-color: #0C0C1C;
+      height: 3px;
+    } 
 
 
 </style>
+
 <script language="JavaScript" src="js/user.js">
 </script>
 <script type="text/javascript">
-function getVote(int)
+function getVote(candname)
 {
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {// This will work for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
   }
 else
-  {// code for IE6, IE5
+  {// This will work for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-	if(confirm("Your vote is for "+int))
+	if(confirm("Your vote is for "+candname))
 	{
-  var pos=document.getElementById("str").value;
+  var votedposition=document.getElementById("str").value;
   var id=document.getElementById("hidden").value;
-  xmlhttp.open("GET","save.php?vote="+int+"&user_id="+id+"&position="+pos,true);
+  xmlhttp.open("GET","save.php?vote="+candname+"&voter_id="+id+"&position="+votedposition,true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange =function()
@@ -194,11 +200,11 @@ else
 function getPosition(String)
 {
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {// This will work for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
   }
 else
-  {// code for IE6, IE5
+  {// This will work for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
@@ -227,7 +233,7 @@ $(document).ready(function(){
 </script>
 </head>
 
-<div style="background-color: #0C0C1C;">
+<body style="background-color: #B6AAAA;">
 
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
@@ -239,12 +245,15 @@ $(document).ready(function(){
   
   
 </div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
 <?php
   $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
- 
-				echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+      ?>
+      <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
+      <?php 
+				echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+  
   ?>
 
  
@@ -252,20 +261,19 @@ $(document).ready(function(){
 
 </div>
 
-</div>
+
+
 <div style="background-color: #B6AAAA; height: 700px; position: relative;">
-  
-<div class ="boxxx" >     
-<div class="refresh">
-</div>
+ <div class="refresh">
+</div> 
 <div class="container">
 <table width="460px" align="center">
 <CAPTION><p class="topic">CHOOSE POSITION</p></CAPTION>
 <form name="fmNames" id="fmNames" method="post" action="vote.php" onSubmit="return positionValidate(this)">
 <tr>
     
-    <td><SELECT NAME="position" id="position" onclick="getPosition(this.value)">
-    <OPTION VALUE="select">select
+    <td><SELECT class="labels" NAME="position" id="position" onclick="getPosition(this.value)">
+    <OPTION VALUE="select" >select
     <?php 
     //loop through all table rows
     while ($row=mysqli_fetch_array($positions)){
@@ -285,8 +293,12 @@ $(document).ready(function(){
 </tr>
 </form> 
 </table>
+<hr class="hr1">
 
-<h2 style="text-align:center;background-color:#504F4F;color:#FFFF;">CANDIDATES</h2>
+<p class= "topic"style="text-align:center;background-color:#504F4F;color:#FFFF;">CANDIDATES</p>
+
+<center><span id="error"></span></center>
+  
 <?php
 //loop through all table rows
 //if (mysql_num_rows($result)>0){
@@ -309,7 +321,6 @@ else
 ?>
 
 
-<center><span id="error"></span></center>
 </div>
 </div>
 </div>

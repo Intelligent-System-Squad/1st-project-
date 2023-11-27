@@ -41,12 +41,12 @@ $sql = mysqli_query($con,"UPDATE tbMembers SET first_name='$myFirstName', last_n
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Student Profile Management</title>
 <style>
-    .mainnav {
+     .mainnav {
       background-color: #0C0C1C;
       overflow: hidden;
-      margin-left: 10cm;
-      margin-left: 30px;
       display: inline-block;
+      background-color: #0C0C1C;
+      width: 100%;
      
     }
     #buttons {
@@ -57,7 +57,7 @@ $sql = mysqli_query($con,"UPDATE tbMembers SET first_name='$myFirstName', last_n
       font-weight: bolder;
       font-size: 18px;
     }
-    .sidenav {
+ .sidenav {
   height: 100%;
   width: 0;
   position: fixed;
@@ -170,6 +170,10 @@ h1{
         #box2 {
             margin-left: 200px;
         }
+        #propic{
+ justify:center;
+  margin-left: 200px;
+}
 
         .registerbtn {
             background-color: #D49FE7;
@@ -184,7 +188,8 @@ h1{
 <script language="JavaScript" src="js/user.js">
 </script>
 </head>
-<div style="background-color: #0C0C1C;">
+<body style="background-color: #B6AAAA;">
+<div>
 
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
@@ -196,18 +201,19 @@ h1{
   
   
 </div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
 <?php
   $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
- 
-				echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+      ?>
+      <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
+      <?php 
+				echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+  
   ?>
 
  
 <a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
-
-</div>
 
 </div>
 <div style="background-color: #B6AAAA; height: 700px; position: relative;">

@@ -183,11 +183,5 @@ align-items: center; margin-left: 480px; margin-top: 100px; border-radius: 20px;
       </div>
     </div>
   </div>
-<br>Not yet registered? <a href="registeracc.php"><b>Register Here</b></a>
-
-</div>
-<div id="footer">
-<div class="bottom_addr">&copy; 2012 Simple PHP Polling System. All Rights Reserved</div>
-</div>
 </div>
 </body></html>

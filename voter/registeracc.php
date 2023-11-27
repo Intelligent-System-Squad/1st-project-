@@ -6,26 +6,40 @@
         </title>
         <style>
           .mainnav {
-          background-color: #0C0C1C;
-          overflow: hidden;
-          margin-left: 10cm;
-          margin-left: 30px;
-          display: inline-block;
+            background-color: #0C0C1C;
+            overflow: hidden;
+            margin-left: 30px;
+            display: inline-block;
         }
-    
-        .mainnav a {
-          float: left;
-          color: #FFFFFF;
-          text-align: center;
-          padding: 18px 35px;
-          text-decoration: none;
-          font-size: 18px;
+
+        .nav{
+            float: left;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px 40px;
+            text-decoration: none;
+            font-size: 18px;
         }
-    
-        .mainnav a:hover {
-          background-color: #504F4F;
-          color: #FFFFFF;
+
+        .nav:hover {
+            background-color: #504F4F;
+            color: #FFFFFF;
+        }       
+
+        #buttons {
+            background-color: #D49FE7;
+            border-radius: 5px;
+            margin-top: 8px;
+            padding: 10px 35px;
+            font-weight: bolder;
+            font-size: 18px;
         }
+        .space {
+            width: 20px;
+            height: auto;
+            display: inline-block;
+        }
+        
     
         .navi {
           float: left;
@@ -42,7 +56,8 @@
             width:20px;
             height:auto;
             display:inline-block;
-        }       
+        }
+       
         .text1{
             font-size: 25px;
             font-weight: bolder; 
@@ -107,28 +122,62 @@
             background-color:#DDBEBE;
             color:#0C0C1C;
         }
+        #logo{
+        
+        position: absolute;
+        margin-top: 100px; 
+        margin-left:150px;         
+        
+    }
+    #bo{
+        background-color: #D49FE7;
+        height: 450px;
+        width: 500px;            
+        margin-left:700px;
+        position:relative;
+        margin-top:70px;
+            
+    }
+    .formm{
+        background-color: #0C0C1C;
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        margin:0;        
+        height: 400px;
+        width:450px;           
+        color: #DDBEBE;
+        text-align:center;
+        font-size: 20px;
+                    
+    }
+    .bo1{
+        float:left;
+    }
+
         
         
         </style>
     </head>
     <body>
-      <div style="background-color: #0C0C1C; ">
+    <div style="background-color: #0C0C1C; ">
         <div class="mainnav">
-          <div class="navi" style="margin-top: 8px;"><img src="logg.jpeg" style="height:40px ; margin-left: 60px;">
-          </div>
-          <div class="space"></div>
-          <div class="navi">
-            <a href="#home">Home</a>
-            <a href="#elections">Elections</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
-            <button id="buttons" style="margin-left:250px ;">LogIn</button>
+            <div class="navi" style="margin-top: 8px;"><img src="assets/logoo.jpeg" style="height:40px ; margin-left: 60px;">
+            </div>
             <div class="space"></div>
-            <button id="buttons">SignUp</button>
-          </div>
-    
+            <div class="navi">
+                <a class="nav" href="../homepage.html" target="_blank">Home</a>                
+                <a class="nav"href="../services.html" target="_blank">Services</a>
+                <a class="nav"href="../contact.html">Contact</a>
+                <a class="but"href="../logbutt.html"><button id="buttons" style="margin-left:250px ;">LogIn</button></a>
+                <div class="space"></div>
+                <a class="but"href="../regbutt.html"><button id="buttons">SignUp</button></a>
+            </div>
+
         </div>
-      </div>
+    </div>
 
 <div id="container">
 <?php
@@ -147,7 +196,28 @@ $newpass = md5($myPassword); //This will make your password encrypted into md5, 
 $sql = mysqli_query($con, "INSERT INTO tbMembers(first_name, last_name, email,password) 
 VALUES ('$myFirstName','$myLastName', '$myEmail', '$newpass') ");
 
-die( "You have registered for an account.<br><br>Go to <a href=\"index.php\">Login</a>" );
+die( "<body bgcolor=#B6AAAA><div class='container' >
+<div id='logo' class='box1'>
+                
+                <img src='assets/logoo.jpeg' width='300px' height='380px'>
+                </div>
+                <div id='bo' class='bo1'>
+                    
+                
+                
+                <div class='formm'>
+                <p style='margin-top:60px'>Dear User, <br><br><br>
+                    You have successfully created<br><br>
+                    an admin account. Please <a href='logIn.php'>login</a><br><br>
+                    to get access to your privileges.<br><br>
+                    </p>
+
+                </div>
+</div>
+
+                
+                    
+</div></body>" );
 }
 ?>
             <div  style="background-color: #B6AAAA; height: 800px; position: relative;">
@@ -158,7 +228,7 @@ die( "You have registered for an account.<br><br>Go to <a href=\"index.php\">Log
                         GET REGISTERED <br>
                         AND JOIN US NOW!    
                     </p>
-                    <img src="logg.jpeg" width="300px" height="380px">
+                    <img src="assets/logoo.jpeg" width="300px" height="380px">
                     </div>
                    
                     <div id="box"
@@ -178,8 +248,6 @@ die( "You have registered for an account.<br><br>Go to <a href=\"index.php\">Log
                         <input type="password" id="password" name="password" maxlength='15'><br><br>
                         <label for="password">Confirm Password</label><br>                        
                         <input type="password" id="ConfirmPassword" name="ConfirmPassword" maxlength='15'><br><br>
-                        <label for="file">Profile Picture</label><br>
-                        <input type="file" id="pp" name="pp"><br><br>
                         <input type="submit" name='submit' value='Register Account' class="registerbtn">
                     </form>
                     </div>
@@ -195,9 +263,7 @@ die( "You have registered for an account.<br><br>Go to <a href=\"index.php\">Log
 
 
 
-<div id="footer">
-<div class="bottom_addr">&copy; 2012 Simple PHP Polling System. All Rights Reserved</div>
-</div>
+
 </div>
 </body>
 <script src="js/jquery-1.2.6.min.js"></script>

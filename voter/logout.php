@@ -62,7 +62,7 @@ session_start();
                     <p style="margin-top:80px">You have been successfully  <br><br>
                     logged out of your account.<br><br>
                     Click here to <a href="logIn.php">Login</a><br><br>
-                       or return to <a href="homepage.html">Home</a><br><br></p>
+                       or return to <a href="../homepage.html">Home</a><br><br></p>
 
                     </div>
     </div>
@@ -75,6 +75,5 @@ session_start();
 <?php
 session_destroy();
 ?>
-
-
-</body></html>
+</body>
+</html>
