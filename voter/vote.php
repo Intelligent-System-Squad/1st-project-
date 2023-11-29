@@ -2,44 +2,42 @@
 require('connection.php');
 
 session_start();
-//If your session isn't valid, it returns you to the login screen for protection
+//This checks whether session is valid or not/ whether the user is logged in or not.
 if(empty($_SESSION['member_id'])){
  header("location:access-denied.php");
 }
 
 ?>
 <?php
-// retrieving positions sql query
-$positions=mysqli_query($con, "SELECT * FROM tbPositions");
+// Getting all the positions where the status of the position is active. This means the voter can view only the active positions. 
+$positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'");
 ?> 
 <?php
-    // retrieval sql query
-// check if Submit is set in POST
+//This is used to check whether the button with name 'submit' is clicked.
  if (isset($_POST['Submit']))
  {
- // get position value
- $position = addslashes( $_POST['position'] ); //prevents types of SQL injection
+// gets the value of position selected by the voter.
+ $position = addslashes( $_POST['position'] ); 
+
+ // query to get the details of the selected position.
+ $posit = mysqli_query($con, "SELECT * FROM tbPositions WHERE position_name = '$position'");
+ $posi = mysqli_fetch_array($posit);
  
- // retrieve based on position
+ // it gets the data of the candidates whose position value matches the positon value which the voter selected.
  $result = mysqli_query($con,"SELECT * FROM tbCandidates WHERE candidate_position='$position'");
- // redirect back to vote
- //header("Location: vote.php");
  }
- else
- // do something
-  
+
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Simple PHP Polling System:Voting Page</title>
+<title>Current Polls - Electoral Poll</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;
       overflow: hidden;
-      margin-left: 10cm;
-      margin-left: 30px;
       display: inline-block;
+      width: 100%;
      
     }
     #buttons {
@@ -51,134 +49,172 @@ $positions=mysqli_query($con, "SELECT * FROM tbPositions");
       font-size: 18px;
     }
     .sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #0C0C1C;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-}
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #0C0C1C;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
 
-.sidenav a {
-  padding: 8px 8px 20px 32px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #FFFFFF;
-  display: block;
-  transition: 0.3s;
-}
+    .sidenav a {
+      padding: 8px 8px 20px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.3s;
+    }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
 
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-h1{
-  color:#FFFF;
-}
-.line{
-  float:left;
-}
-#candidatebutton{
-      background-color: #504F4F;
-      border-radius: 5px;     
-      padding: 6px 25px;
-      font-weight: bold;
-      font-size: 14px;
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+
+    h1{
       color:#FFFF;
     }
-  .card {
-  background-color: #0C0C1C;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 250px;
-  margin: auto;
-  text-align: center;  
-  margin-left: 40px; 
-  margin-top: 40px;
-  float:left;
- 
- 
- 
-}
 
-.title {
-  color: grey;
-  font-size: 18px;
-}
-.votes {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: #000000;
-  font-weight:bold;
-  background-color: #D49FE7;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  font-size: 18px;
-}
-            
+    .line{
+      float:left;
+    
+    }
+    #candidatebutton{
+        background-color: #504F4F;
+        border-radius: 5px;     
+        padding: 6px 25px;
+        font-weight: bold;
+        font-size: 14px;
+        color:#FFFF;
+      }
 
-.topic{
-  font-size: 24px;
-  font-weight:bolder;
-  font-weight:bold;
-  background-color:#504F4F;
-  color:#FFFF;
-}
-.boxxx{
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    .card {
+      background-color: #0C0C1C;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 250px;
+      margin: auto;
+      text-align: center;  
+      margin-left: 40px; 
+      margin-top: 40px;
+      float:left;
+    
+    }
 
-}
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
 
+    .votes {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: #000000;
+      font-weight:bold;
+      background-color: #D49FE7;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }     
+
+    .labels{
+        font-size:18px;
+        font-weight:bold;
+      }
+
+    .boxxx{
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    #propic{
+    justify:center;
+      margin-left: 200px;
+    }
+
+    #error{
+      font-weight: bold;
+    }
+
+    .hr1{
+          background-color: #0C0C1C;
+          height: 3px;
+    } 
+
+    .oneline{
+      display: flex;
+      background: rgb(201,104,195);
+      background: linear-gradient(90deg, rgba(201,104,195,1) 57%, rgba(212,159,231,1) 79%, rgba(201,181,203,1) 100%);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);  
+      justify-content:center;
+      align-items: center;
+      text-align: center; 
+      margin: 0 auto;
+      font-size:20px;
+      font-weight:bolder;  
+      color:#0C0C1C; 
+    }
+
+    .space1{
+      height: 30px;    
+    }  
+  
+    .lin{
+      font-size:21px;
+      font-weight:bolder;  
+      color:#0C0C1C;
+      float:left;
+      text-transform: uppercase;
+    }  
 
 
 </style>
+
 <script language="JavaScript" src="js/user.js">
 </script>
 <script type="text/javascript">
-function getVote(int)
+function getVote(candname)
 {
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 else
-  {// code for IE6, IE5
+  {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-	if(confirm("Your vote is for "+int))
+	if(confirm("Your vote is for "+candname))
 	{
-  var pos=document.getElementById("str").value;
+  var votedposition=document.getElementById("str").value;
   var id=document.getElementById("hidden").value;
-  xmlhttp.open("GET","save.php?vote="+int+"&user_id="+id+"&position="+pos,true);
+  xmlhttp.open("GET","save.php?vote="+candname+"&voter_id="+id+"&position="+votedposition,true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange =function()
 {
 	if(xmlhttp.readyState ==4 && xmlhttp.status==200)
-	{
-  //  alert("dfdfd");
+	{ 
 	document.getElementById("error").innerHTML=xmlhttp.responseText;
 	}
 }
@@ -194,11 +230,11 @@ else
 function getPosition(String)
 {
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 else
-  {// code for IE6, IE5
+  {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
@@ -206,28 +242,10 @@ xmlhttp.open("GET","vote.php?position="+String,true);
 xmlhttp.send();
 }
 </script>
-<script type="text/javascript">
-$(document).ready(function(){
-   var j = jQuery.noConflict();
-    j(document).ready(function()
-    {
-        j(".refresh").everyTime(1000,function(i){
-            j.ajax({
-              url: "admin/refresh.php",
-              cache: false,
-              success: function(html){
-                j(".refresh").html(html);
-              }
-            })
-        })
-        
-    });
-   j('.refresh').css({color:"green"});
-});
-</script>
+
 </head>
 
-<div style="background-color: #0C0C1C;">
+<body style="background-color: #B6AAAA;">
 
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
@@ -239,12 +257,15 @@ $(document).ready(function(){
   
   
 </div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
 <?php
   $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
- 
-				echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+      ?>
+      <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
+      <?php 
+				echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+  
   ?>
 
  
@@ -252,31 +273,35 @@ $(document).ready(function(){
 
 </div>
 
-</div>
+
+
 <div style="background-color: #B6AAAA; height: 700px; position: relative;">
-  
-<div class ="boxxx" >     
-<div class="refresh">
-</div>
+ <div class="refresh">
+</div> 
 <div class="container">
+  <div class="space1"></div>
 <table width="460px" align="center">
-<CAPTION><p class="topic">CHOOSE POSITION</p></CAPTION>
+<CAPTION><div class="oneline"><p>CHOOSE POSITION</p></div></CAPTION>
+
 <form name="fmNames" id="fmNames" method="post" action="vote.php" onSubmit="return positionValidate(this)">
+  
 <tr>
-    
-    <td><SELECT NAME="position" id="position" onclick="getPosition(this.value)">
-    <OPTION VALUE="select">select
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+<tr>    
+    <td><SELECT class="labels" NAME="position" id="position" onclick="getPosition(this.value)">
+    <OPTION VALUE="select" >select
     <?php 
-    //loop through all table rows
+    //loop through all rows of the table
     while ($row=mysqli_fetch_array($positions)){
-    echo "<OPTION VALUE=$row[position_name]>$row[position_name]"; 
-    //mysql_free_result($positions_retrieved);
-    //mysql_close($link);
+    echo "<OPTION VALUE=$row[position_name]>$row[position_name]";     
     }
     ?>
     </SELECT></td>
-    <td><input type="hidden" id="hidden" value="<?php echo $_SESSION['member_id']; ?>" /></td>
-    <td><input type="hidden" id="str" value="<?php echo $_REQUEST['position']; ?>" /></td>
+
+    <td><input type="hidden" id="hidden" value="<?php echo $_SESSION['member_id']; ?>" /></td><!-- Hidden and stores the voter id whose performing the vote-->  
+    <td><input type="hidden" id="str" value="<?php echo $_REQUEST['position']; ?>" /></td><!-- Hidden and stores the position for which the vite is performed-->
     <td><button type="submit" name="Submit" id="candidatebutton">See Candidates</button></td>
 </tr>
 <tr>
@@ -285,11 +310,16 @@ $(document).ready(function(){
 </tr>
 </form> 
 </table>
+<hr class="hr1">
 
-<h2 style="text-align:center;background-color:#504F4F;color:#FFFF;">CANDIDATES</h2>
+<div class="oneline"> <p class='lin' >
+        Candidates&nbsp<?php if(isset($_POST['Submit'])){ echo "<p class='lin'> of " . $posi['position_name'] . "&nbspPosition</p>"; }?>
+    </p></div>
+
+<center><span id="error"></span></center>
+  
 <?php
 //loop through all table rows
-//if (mysql_num_rows($result)>0){
   if (isset($_POST['Submit']))
   {
 while ($row=mysqli_fetch_array($result)){
@@ -302,14 +332,13 @@ echo "</div>";
 }
 mysqli_free_result($result);
 mysqli_close($con);
-//}
+
  }
 else
-// do nothing
+
 ?>
 
 
-<center><span id="error"></span></center>
 </div>
 </div>
 </div>

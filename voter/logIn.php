@@ -35,114 +35,112 @@
             width: 20px;
             height: auto;
             display: inline-block;
+        }        
+
+        .navi {
+          float: left;
+        }    
+
+        .form h2 {
+          text-align: center;
+          letter-spacing: 1px;
+          margin-bottom: 2rem;
+          color: white;
         }
-        
 
-    .navi {
-      float: left;
-    }
+        .login-wrapper {
+          height: 100vh;
+          width: 100vw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-    
+        }
 
-    .form h2 {
-      text-align: center;
-      letter-spacing: 1px;
-      margin-bottom: 2rem;
-      color: white;
-    }
+        .form {
+          position: relative;
+          width: 100%;
+          max-width: 380px;
+          padding: 80px 40px 40px;
+          background: #0C0C1C;
+          border-radius: 20px;
+          color: #DDBEBE;
+          box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
 
-    .login-wrapper {
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        .form::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 50%;
+          height: 100%;
+          background: #0C0C1C;
+          transform: skewX(-26deg);
+          transform-origin: bottom left;
+          border-radius: 20px;
+          pointer-events: none;
+        }
 
-    }
+        .form .input-group {
+          position: relative;
+        }
 
-    .form {
-      position: relative;
-      width: 100%;
-      max-width: 380px;
-      padding: 80px 40px 40px;
-      background: #0C0C1C;
-      border-radius: 20px;
-      color: #DDBEBE;
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-    }
+        .form .input-group input {
+          width: 100%;
+          padding: 10px 0;
+          font-size: 1rem;
+          letter-spacing: 1px;
+          margin-bottom: 30px;
+          border: none;
+          border-bottom: 1px solid #DDBEBE;
+          outline: none;
+          background-color: transparent;
+          color: inherit;
+        }
 
-    .form::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 50%;
-      height: 100%;
-      background: #0C0C1C;
-      transform: skewX(-26deg);
-      transform-origin: bottom left;
-      border-radius: 20px;
-      pointer-events: none;
-    }
+        .form .input-group label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 10px 0;
+          font-size: 1rem;
+          pointer-events: none;
+          transition: 0.3s ease-out;
+        }
 
+        .form .input-group input:focus+label,
+        .form .input-group input:valid+label {
+          transform: translateY(-18px);
+          color: white;
+          font-size: 0.8rem;
+        }
 
+        .submit-btn {
+          display: block;
+          margin-left: auto;
+          border: none;
+          outline: none;
+          background: #D49FE7;
+          padding: 10px 35px;
+          font-weight: bolder;
+          font-size: 18px;
+          border-radius: 8px;
+          height: 40px;
+          cursor: pointer;
+        }
 
-    .form .input-group {
-      position: relative;
-    }
-
-    .form .input-group input {
-      width: 100%;
-      padding: 10px 0;
-      font-size: 1rem;
-      letter-spacing: 1px;
-      margin-bottom: 30px;
-      border: none;
-      border-bottom: 1px solid #DDBEBE;
-      outline: none;
-      background-color: transparent;
-      color: inherit;
-    }
-
-    .form .input-group label {
-      position: absolute;
-      top: 0;
-      left: 0;
-      padding: 10px 0;
-      font-size: 1rem;
-      pointer-events: none;
-      transition: 0.3s ease-out;
-    }
-
-    .form .input-group input:focus+label,
-    .form .input-group input:valid+label {
-      transform: translateY(-18px);
-      color: white;
-      font-size: 0.8rem;
-    }
-
-    .submit-btn {
-      display: block;
-      margin-left: auto;
-      border: none;
-      outline: none;
-      background: #D49FE7;
-      padding: 10px 35px;
-      font-weight: bolder;
-      font-size: 18px;
-      border-radius: 8px;
-      height: 40px;
-      cursor: pointer;
-    }
   </style>
 </head>
 
 <body>
 <div style="background-color: #0C0C1C; ">
+<!-- Main Navigation bar --> 
         <div class="mainnav">
             <div class="navi" style="margin-top: 8px;"><img src="assets/logoo.jpeg" style="height:40px ; margin-left: 60px;">
             </div>
             <div class="space"></div>
+            <!--side navigation bar-->
             <div class="navi">
                 <a class="nav" href="../homepage.html" target="_blank">Home</a>                
                 <a class="nav"href="../services.html" target="_blank">Services</a>
@@ -165,8 +163,8 @@ text-align: center;"> VOTER LOGIN</P>
       <div style="background-color: #D49FE7; height: 400px; width: 500px; display: flex;
 justify-content: center;
 align-items: center; margin-left: 480px; margin-top: 100px; border-radius: 20px;">
-
         <div class="login-wrapper">
+          <!-- logIn form -->
         <form name="form1" method="post" action="checklogin.php" onSubmit="return loginValidate(this)" class="form">
 
             <div class="input-group">
@@ -183,11 +181,5 @@ align-items: center; margin-left: 480px; margin-top: 100px; border-radius: 20px;
       </div>
     </div>
   </div>
-<br>Not yet registered? <a href="registeracc.php"><b>Register Here</b></a>
-
-</div>
-<div id="footer">
-<div class="bottom_addr">&copy; 2012 Simple PHP Polling System. All Rights Reserved</div>
-</div>
 </div>
 </body></html>
