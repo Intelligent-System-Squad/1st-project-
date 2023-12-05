@@ -3,7 +3,7 @@
 <script language="JavaScript" src="js/admin.js">
 </script>
 <title>
-        Voter Registration
+        Admin Registration
     </title>
     <style>
     .mainnav {
@@ -194,98 +194,71 @@ $myLastName = addslashes( $_POST['lastname'] ); //prevents SQL injection
 $myEmail = addslashes($_POST['email']); //prevents SQL injection
 $myPassword = addslashes($_POST['password']); //prevents SQL injection
 $newpass = md5($myPassword); //This will make your password encrypted into md5 which is secure hash
+$emailCheckQuery = "SELECT COUNT(*) as count FROM tbadministrators WHERE email = '$myEmail'";//Check uniqueness of email
+$emailCheckResult = mysqli_query($con, $emailCheckQuery);
+$emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
+if ($emailCount > 0) {
+  // Email is not unique      
+  echo "<script>alert('Email address is not unique. Please choose a different email.');</script>"; 
+}else{  
 
 $sql = mysqli_query($con, "INSERT INTO tbadministrators(first_name, last_name, email,password) 
 VALUES ('$myFirstName','$myLastName', '$myEmail', '$newpass') "); //inserting values into database
 
 die( "<body bgcolor=#B6AAAA><div class='container' >
-<div id='logo' class='box1'>
-                
-                <img src='assets/logoo.jpeg' width='300px' height='380px'>
-                </div>
-                <div id='bo' class='bo1'>
-                    
-                
-                
-                <div class='formm'>
-                <p style='margin-top:60px'>Dear User, <br><br><br>
-                    You have successfully created<br><br>
-                    an admin account. Please <a href='logIn.php'>login</a><br><br>
-                    to get access to your privileges.<br><br>
-                    </p>
-
-                </div>
+<div id='logo' class='box1'>                
+    <img src='assets/logoo.jpeg' width='300px' height='380px'>
+    </div>
+    <div id='bo' class='bo1'>               
+    <div class='formm'>
+    <p style='margin-top:60px'>Dear User, <br><br><br>
+        You have successfully created<br><br>
+        an admin account. Please <a href='logIn.php'>login</a><br><br>
+        to get access to your privileges.<br><br>
+        </p>
+    </div>
+</div>                   
 </div>
-
-                
-                    
-</div></body>"
+</body>"
 );
+}
 }
 ?>
 <!--registration form-->
-        <div  style="background-color: #B6AAAA; height: 800px; position: relative;">
-            <div class="logo" >
-                <div class="box1" id="box2">
-                
-                <p class="text1" >
-                    GET REGISTERED <br>
-                    AND JOIN US NOW!    
-                </p>
-                <img src="assets/logoo.jpeg" width="300px" height="380px">
-                </div>
-                
-                <div id="box"
-                class="box1" >
-                <p class="text1" style="text-align:center ;">ADMIN REGISTRATION</p>
-                
-                <form action="registeracc.php" method="post" onsubmit="return registerValidate(this)" class="form">
-                    <br>
-                    <label for="firstname" >First Name</label><br>
-                    <input type="text" id="firstname" name="firstname" maxlength='15'><br><br>
-                    <label for="lastname">Last Name</label><br>
-                    <input type="text" id="lastname" name="lastname" maxlength='15'><br><br>
-                    <label for="email">Email Address</label><br>
-                    <input type="email" id="email" name="email" maxlength='100'><br> 
-                    <span id='result' style='color:red; margin-left:90px;'></span><br>                   
-                    <label for="password">Password</label><br>
-                    <input type="password" id="password" name="password" maxlength='15'><br><br>
-                    <label for="password">Confirm Password</label><br>
-                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" maxlength='15'><br><br>                       
-                    <input type="submit" name='submit' value='Register Account' class="registerbtn">
-                </form>
-                </div>
-
-                
-            </div>
-        </div>          
+<div  style="background-color: #B6AAAA; height: 800px; position: relative;">
+    <div class="logo" >
+        <div class="box1" id="box2">        
+        <p class="text1" >
+            GET REGISTERED <br>
+            AND JOIN US NOW!    
+        </p>
+        <img src="assets/logoo.jpeg" width="300px" height="380px">
+        </div>
+        
+        <div id="box"
+        class="box1" >
+        <p class="text1" style="text-align:center ;">ADMIN REGISTRATION</p>
+        
+        <form action="registeracc.php" method="post" onsubmit="return registerValidate(this)" class="form">
+            <br>
+            <label for="firstname" >First Name</label><br>
+            <input type="text" id="firstname" name="firstname" maxlength='15'><br><br>
+            <label for="lastname">Last Name</label><br>
+            <input type="text" id="lastname" name="lastname" maxlength='15'><br><br>
+            <label for="email">Email Address</label><br>
+            <input type="email" id="email" name="email" maxlength='100'><br> 
+            <span id='result' style='color:red; margin-left:90px;'></span><br>                   
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" maxlength='15'><br><br>
+            <label for="password">Confirm Password</label><br>
+            <input type="password" id="ConfirmPassword" name="ConfirmPassword" maxlength='15'><br><br>                       
+            <input type="submit" name='submit' value='Register Account' class="registerbtn">
+        </form>
+        </div>        
+    </div>
+</div>          
 
 </div>
 </body>
-<script src="js/jquery-1.2.6.min.js"></script>
-<script>
-$(document).ready(function(){
-    
-    $('#email').blur(function(event){
-        
-        event.preventDefault();
-        var emailId=$('#email').val();
-                            $.ajax({                     
-                        url:'checkuser.php',
-                        method:'post',
-                        data:{email:emailId},  
-                        dataType:'html',
-                        success:function(message)
-                        {
-                        $('#result').html(message);
-                        }
-                    });
-                
-        
 
-    });
-
-});
-
-</script>
 </html>

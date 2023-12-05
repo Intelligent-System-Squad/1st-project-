@@ -13,7 +13,6 @@ if (mysqli_num_rows($result)<1){
 ?>
 
 <?php
-$status = $statusMsg = ''; 
 //This will insert all the details filled in the voter adding form into the database if the button with name submit is clicked
 if (isset($_POST['Submit']))
 {
@@ -26,25 +25,23 @@ $emailCheckQuery = "SELECT COUNT(*) as count FROM tbmembers WHERE email = '$emai
     $emailCheckResult = mysqli_query($con, $emailCheckQuery);
     $emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
     if ($emailCount > 0) {
-      // Email is not unique
-      
-      echo "<script>alert('Email address is not unique. Please choose a different email.');</script>";
-     
+      // Email is not unique      
+      echo "<script>alert('Email address is not unique. Please choose a different email.');</script>";     
   } else {
-if($_FILES["image"]["error"] == 4){
+if($_FILES["image"]["error"] == 4){ // error code 4 is where the image is not uploaded
   echo
   "<script> alert('Image Does Not Exist'); </script>"
   ;
 }
 else{
-  $fileName = $_FILES["image"]["name"];
-  $fileSize = $_FILES["image"]["size"];
-  $tmpName = $_FILES["image"]["tmp_name"];
+  $fileName = $_FILES["image"]["name"];//Gets the original file name
+  $fileSize = $_FILES["image"]["size"];//Gets the original file size
+  $tmpName = $_FILES["image"]["tmp_name"];//Gets the temporary file name the server assigned to the uploaded file
 
-  $validImageExtension = ['jpg', 'jpeg', 'png'];
-  $imageExtension = explode('.', $fileName);
-  $imageExtension = strtolower(end($imageExtension));
-  if ( !in_array($imageExtension, $validImageExtension) ){
+  $validImageExtension = ['jpg', 'jpeg', 'png'];//The array containing valid image file extensions
+  $imageExtension = explode('.', $fileName);//To get the file extension of the file. It splits the filename into an array using '.'
+  $imageExtension = strtolower(end($imageExtension));//Gets last element of the array and converts it to lowercase
+  if ( !in_array($imageExtension, $validImageExtension) ){//If extracted extension is not in valid extension array
     echo
     "
     <script>
@@ -52,7 +49,7 @@ else{
     </script>
     ";
   }
-  else if($fileSize > 1000000){
+  else if($fileSize > 1000000){//if uploaded image size is greater than 1000000 bytes 
     echo
     "
     <script>
@@ -61,10 +58,11 @@ else{
     ";
   }
   else{
-    $newImageName = uniqid();
+    $newImageName = uniqid();//creates a new unique identifier by appending the valid extension with a new name
     $newImageName .= '.' . $imageExtension;
 
-    move_uploaded_file($tmpName, 'img/' . $newImageName);
+    move_uploaded_file($tmpName, 'img/' . $newImageName);//Move the uploaded temporary file to the img directory with the unique new filename.
+    // Insert the values into the database of candidates
     $query = "INSERT INTO tbmembers(first_name,last_name,email,password,image) VALUES ('$newVoterFName','$newVoterLName','$email','$newpass','$newImageName')";
     mysqli_query($con, $query);
     header("Location: voters.php");
@@ -88,6 +86,7 @@ else{
  // get id value
  $id = $_GET['id'];
  
+ $preresult = mysqli_query($con, "DELETE FROM tblvotes WHERE voter_id='$id'");
  // delete the voter details from database
  $result = mysqli_query($con, "DELETE FROM tbmembers WHERE member_id='$id'");
  
@@ -97,10 +96,10 @@ else{
  else
  // do nothing   
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang ="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Electoral Poll: Manage Voters</title>
 <script language="JavaScript" src="js/admin.js">
 </script>
@@ -112,22 +111,22 @@ else{
         width: 100%;
       
       }
-      footer{
-        background-color: #0C0C1C;
-        width: 100%;
-        text-align:center;
-        color:#FFFFFF;
-        display: inline-block;
-        margin-top:80px;
-      }
-      #buttons {
-        background-color: #D49FE7;
-        border-radius: 5px;
-        margin-top: 8px;
-        padding: 10px 35px;
-        font-weight: bolder;
-        font-size: 18px;
-      }
+    footer{
+      background-color: #0C0C1C;
+      width: 100%;
+      text-align:center;
+      color:#FFFFFF;
+      display: inline-block;
+      margin-top:80px;
+    }
+    #buttons {
+      background-color: #D49FE7;
+      border-radius: 5px;
+      margin-top: 8px;
+      padding: 10px 35px;
+      font-weight: bolder;
+      font-size: 18px;
+    }
     #addbutton{
       background-color: #504F4F;
       border-radius: 5px;     
@@ -250,6 +249,22 @@ else{
       font-size:16px;
       font-weight:bold;
     } 
+    .oneline{
+      display: flex;
+      background: rgb(201,104,195);
+      background: linear-gradient(90deg, rgba(201,104,195,1) 57%, rgba(212,159,231,1) 79%, rgba(201,181,203,1) 100%);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);  
+      justify-content:center;
+      align-items: center;
+      text-align: center; 
+      margin: 0 auto;
+      font-size:20px;
+      font-weight:bolder;  
+      color:#0C0C1C; 
+    }
+    .space1{
+      height: 30px;
+    }
 
   </style>
   </head>
@@ -263,7 +278,7 @@ else{
   <a href="voters.php">Manage Voters</a>
   <a href="positions.php">Manage Positions</a>
   <a href="candidates.php">Manage Candidates</a>
-  <a href="refresh.php">Poll Results</a>
+  <a href="results.php">Poll Results</a>
   <a href="manage-admins.php">Manage Account</a>
   <a href="change-pass.php">Change Password</a>
   </div>
@@ -282,20 +297,22 @@ else{
 
   </div>
   <div style="position: relative;">
+  <div class="space1"></div>
 <table width ="900" align="center">
-<CAPTION><p class="topic">ADD NEW VOTER</p></CAPTION>
+  <!--Add new voter form-->
+<CAPTION><div class="oneline"><p>ADD NEW VOTER</p></div></CAPTION>
 <form name="fmCandidates" id="fmCandidates" action="voters.php" method="post" onsubmit="return voterValidate(this)" enctype="multipart/form-data">
 <tr>
     <td><p class="labels">Voter First Name</p>
-    <input type="text" name="fname" class="inputt" /></td>
+    <input type="text" name="fname" class="inputt" required /></td>
     <td><p class="labels">Voter Last Name</p>
-    <input type="text" name="lname" class="inputt" /></td>
+    <input type="text" name="lname" class="inputt" required /></td>
     <td><p class="labels">Voter Email</p>
-    <input type="text" name="email" class="inputt"/></td>
+    <input type="text" name="email" class="inputt" required/></td>
 </tr>
 <tr>
 <td><p class="labels">Password</p>
-    <input type="text" name="password" class="inputt"/></td>
+    <input type="text" name="password" class="inputt" required/></td>
     <td>  
 	<label class="labels"  for="photo">Image:</label>
     
@@ -311,7 +328,7 @@ else{
 </table>
 <hr class="hr1">
 <table class="maintbl" align="center">
-<CAPTION><p class="topic">AVAILABLE VOTERS</p></CAPTION>
+<CAPTION><div class="oneline"><p>AVAILABLE VOTERS</p></div></CAPTION>
 
 <th>Voter First Name</th>
 <th>Voter Last Name</th>
@@ -336,7 +353,7 @@ echo "<td>" . $row['last_name']."</td>";
 
 <?php
 echo "<td>" . $row['email']."</td>";
-echo "<td><a href='edit-voter.php?id=$row[member_id]&fn=$row[first_name]&ln=$row[last_name]&em=$row[email]&pass=$row[password]'><button class='delete'><img src='assets/edit.png' height='20px' width='20px' style='margin-right:10px'; />Edit Voter</a></button></td>";
+echo "<td><a href='edit-voter.php?id=$row[member_id]'><button class='delete'><img src='assets/edit.png' height='20px' width='20px' style='margin-right:10px'; />Edit Voter</a></button></td>";
 echo "<td><a href='voters.php?id=$row[member_id]'><button class='delete'><img src='assets/bin.png' height='20px' width='30px' style='margin-right:10px'; />Delete Voter</a></button></td>";
 echo "</tr>";
 $inc++;
@@ -350,7 +367,7 @@ mysqli_close($con);
 <hr class="hr1">
 <footer>
     <p>Created by Electoral Poll. © 2023</p>
-  </footer>        
+</footer>        
     
 </div>
 
