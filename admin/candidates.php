@@ -123,7 +123,11 @@
           font-weight: bold;
           font-size: 14px;
           color:#FFFF;
-        }     
+        }  
+        #addbutton:hover{
+          background-color: #0C0C1C;
+          color:#FFFF;
+        }   
         .sidenav {
           height: 100%;
           width: 0;

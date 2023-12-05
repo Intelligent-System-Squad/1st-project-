@@ -16,18 +16,18 @@ if (mysqli_num_rows($result)<1){
 if (isset($_POST['Submit']))
 {
 //gets the position inserted through form
-$newPosition = addslashes( $_POST['position'] ); //prevents SQL injection
+$newPosition =mysqli_real_escape_string( $con, $_POST['position'] ); //prevents SQL injection
 //setting the starting and ending date of the position elections
-$starting_date = mysqli_real_escape_string($con, $_POST['starting_date']);
-$ending_date = mysqli_real_escape_string($con, $_POST['ending_date']);
+$starting_date = mysqli_real_escape_string($con, $_POST['starting_date']);//prevents SQL injection
+$ending_date = mysqli_real_escape_string($con, $_POST['ending_date']);//prevents SQL injection
 $inserted_on = date("Y-m-d");
 
-$date1=date_create($inserted_on);
+$date1=date_create($inserted_on);//date the position is inserted on is put into a variable
 $date2=date_create($starting_date);
-$diff=date_diff($date1,$date2);
+$diff=date_diff($date1,$date2);//finds the difference between current date and starting date
         
 //setting whether the election is active or inactive
-if((int)$diff->format("%R%a") > 0)
+if((int)$diff->format("%R%a") > 0)//checks sign and the absolute value obtained by diff variable and checks whether it's greater than zero 
 {
     $status = "InActive";
 }else {
@@ -134,6 +134,10 @@ header("Location: positions.php");
       padding: 6px 25px;
       font-weight: bold;
       font-size: 14px;
+      color:#FFFF;
+    }
+    #addbutton:hover{
+      background-color: #0C0C1C;
       color:#FFFF;
     }
     input{
