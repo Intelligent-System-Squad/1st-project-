@@ -1,7 +1,6 @@
 <html>
 <head>
   <script language="JavaScript" src="js/admin.js"></script>
-
   <style>
       .mainnav {
           background-color: #0C0C1C;
@@ -49,102 +48,99 @@
           float: left;
       }
 
-  .form h2 {
-    text-align: center;
-    letter-spacing: 1px;
-    margin-bottom: 2rem;
-    color: white;
-  }
+      .form h2 {
+        text-align: center;
+        letter-spacing: 1px;
+        margin-bottom: 2rem;
+        color: white;
+      }
 
-  .login-wrapper {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+      .login-wrapper {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-  }
+      .form {
+        position: relative;
+        width: 100%;
+        max-width: 380px;
+        padding: 80px 40px 40px;
+        background: #0C0C1C;
+        border-radius: 20px;
+        color: #DDBEBE;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+      }
 
-  .form {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    padding: 80px 40px 40px;
-    background: #0C0C1C;
-    border-radius: 20px;
-    color: #DDBEBE;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-  }
+      .form::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: #0C0C1C;
+        transform: skewX(-26deg);
+        transform-origin: bottom left;
+        border-radius: 20px;
+        pointer-events: none;
+      }
 
-  .form::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: #0C0C1C;
-    transform: skewX(-26deg);
-    transform-origin: bottom left;
-    border-radius: 20px;
-    pointer-events: none;
-  }
+      .form .input-group {
+        position: relative;
+      }
 
+      .form .input-group input {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid #DDBEBE;
+        outline: none;
+        background-color: transparent;
+        color: inherit;
+      }
 
+      .form .input-group label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px 0;
+        font-size: 1rem;
+        pointer-events: none;
+        transition: 0.3s ease-out;
+      }
 
-  .form .input-group {
-    position: relative;
-  }
+      .form .input-group input:focus+label,
+      .form .input-group input:valid+label {
+        transform: translateY(-18px);
+        color: white;
+        font-size: 0.8rem;
+      }
 
-  .form .input-group input {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid #DDBEBE;
-    outline: none;
-    background-color: transparent;
-    color: inherit;
-  }
-
-  .form .input-group label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px 0;
-    font-size: 1rem;
-    pointer-events: none;
-    transition: 0.3s ease-out;
-  }
-
-  .form .input-group input:focus+label,
-  .form .input-group input:valid+label {
-    transform: translateY(-18px);
-    color: white;
-    font-size: 0.8rem;
-  }
-
-  .submit-btn {
-    display: block;
-    margin-left: auto;
-    border: none;
-    outline: none;
-    background: #D49FE7;
-    padding: 10px 35px;
-    font-weight: bolder;
-    font-size: 18px;
-    border-radius: 8px;
-    height: 40px;
-    cursor: pointer;
-  }
+      .submit-btn {
+        display: block;
+        margin-left: auto;
+        border: none;
+        outline: none;
+        background: #D49FE7;
+        padding: 10px 35px;
+        font-weight: bolder;
+        font-size: 18px;
+        border-radius: 8px;
+        height: 40px;
+        cursor: pointer;
+      }
 </style>
 </head>
 
 <body>
 <div style="background-color: #0C0C1C; ">
-<!--navigation bar-->
+<!--Side navigation bar-->
       <div class="mainnav">
           <div class="navi" style="margin-top: 8px;"><img src="assets/logoo.jpeg" style="height:40px ; margin-left: 60px;">
           </div>
