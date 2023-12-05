@@ -6,9 +6,10 @@ require('connection.php');
  $voter_id=$_REQUEST['voter_id'];
  $position=$_REQUEST['position'];
 
+ //Checks whether there are any rows in the tblvotes table with matching position and voterid 
 $sql=mysqli_query($con, "SELECT position,voter_id FROM tblvotes where position='$position' and voter_id='$voter_id'");
 
-if(mysqli_num_rows($sql))
+if(mysqli_num_rows($sql))//Doesn't allow to vote 
 {
     echo "<div style='display:flex; height:70px; font-weight:bolder;font-family: Georgia, serif;  justify-content:center;
     align-items: center;

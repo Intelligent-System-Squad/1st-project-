@@ -14,21 +14,21 @@ if (mysqli_num_rows($result)<1){
 $row = mysqli_fetch_array($result);
 if($row)
 {
- //Obtain data of the logged in member/voter
+ //Obtain data of the logged in member/voter and put them into variables
  $stdId = $row['member_id']; 
  $encpass= $row['password'];
 }
 ?>
 <?php
-//Update new password
+//Updating new password
 if (isset($_POST['changepass'])){
 $myId =  $_REQUEST['id'];
 $oldpass = md5($_POST['oldpass']);
 $newpass = $_POST['newpass'];
 $conpass = $_POST['conpass'];
-if($encpass == $oldpass)
+if($encpass == $oldpass)//checking whether the typed old password matches the old password in the database 
 {
-  if($newpass == $conpass)
+  if($newpass == $conpass)//checking whether the new password matches the confirm password
   {
     $newpassword = md5($newpass); //This will encrypt the password
     $sql = mysqli_query($con,"UPDATE tbmembers SET password='$newpassword' WHERE member_id = '$myId'" );
@@ -44,8 +44,6 @@ else
 {
     echo "<script>alert('Old password is not correct')</script>"; // Not updating the password if the old password is typed incorrectly
 }
-
-
 
 }
 ?>
@@ -203,50 +201,45 @@ else
 <body style="background-color: #B6AAAA;">
 
 <div>
-
+<!--side navigation bar-->
 <div class="mainnav">
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="student.php">Home</a>
-  <a href="vote.php">Current Polls</a>
-  <a href="manage-profile.php">Manage My Profile</a>
-  <a href="changepass.php">Change Password</a>
-  
-  
-</div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
-<!-- Query to display the member name and info -->
-<?php
-  $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
-  $fetch = mysqli_fetch_array($query);
-      ?>
-      <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
-      <?php 
-				echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
-  
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="student.php">Home</a>
+    <a href="vote.php">Current Polls</a>
+    <a href="manage-profile.php">Manage My Profile</a>
+    <a href="changepass.php">Change Password</a>   
+  </div>
+  <span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
+  <!-- Query to display the member name and info -->
+  <?php
+    $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
+    $fetch = mysqli_fetch_array($query);
   ?>
+    <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
+    <?php 
+      echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";  
+    ?>
 
- 
-<a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
-
-</div>
-<div style="background-color: #B6AAAA; height: 700px; position: relative;">       
-
+    <!--logout button--> 
+    <a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
+    </div>
+    <div style="background-color: #B6AAAA; height: 700px; position: relative;">  
       <div id="box">
-          <p class="text1" style="text-align:center ;">CHANGE PASSWORD</p>
-<!-- Form to change password -->
+        <p class="text1" style="text-align:center ;">CHANGE PASSWORD</p>
+        <!-- Form to change password -->
           <form class="form" action="changepass.php?id=<?php echo $_SESSION['member_id']; ?>" method="post">
-              <br>
-              <label for="oldpass">Old Password</label><br>
-              <input type="password" id="oldpass" name="oldpass" value="<?php echo $firstName ?>" required><br><br>
-              <label for="newpass">New Password</label><br>
-              <input type="password" id="newpass" name="newpass"value="<?php echo $lastName ?>" required><br><br>
-              <label for="conpass">Confirm Password</label><br>
-              <input type="password" id="conpass" name="conpass" value="<?php echo $email?>" required><br><br>                    
-              <input type="submit" value="Update Password" class="registerbtn" name="changepass">
+            <br>
+            <label for="oldpass">Old Password</label><br>
+            <input type="password" id="oldpass" name="oldpass" value="<?php echo $firstName ?>" required><br><br>
+            <label for="newpass">New Password</label><br>
+            <input type="password" id="newpass" name="newpass"value="<?php echo $lastName ?>" required><br><br>
+            <label for="conpass">Confirm Password</label><br>
+            <input type="password" id="conpass" name="conpass" value="<?php echo $email?>" required><br><br>                    
+            <input type="submit" value="Update Password" class="registerbtn" name="changepass">
           </form>
       </div>
-   
+  </div>
 </div>
 <script>
 function openNav() {

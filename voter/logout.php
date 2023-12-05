@@ -1,7 +1,8 @@
 <?php
 session_start();
 ?>
-<html><head>
+<html>
+<head>
 <style>
     .container{
         position: absolute;    
@@ -48,30 +49,21 @@ session_start();
 
 </head>
 <body style="background-color: #B6AAAA; auto;" >
-<div style="position: relative;">
-<div class="container" >
-<div id="logo" class="box1">
-                    
-                    <img src="assets/logoo.jpeg" width="300px" height="380px">
-                    </div>
-                    <div id="box" class="box1">
-                     
-                    
-                    
-                    <div class="form">
-                    <p style="margin-top:80px">You have been successfully  <br><br>
-                    logged out of your account.<br><br>
-                    Click here to <a href="logIn.php">Login</a><br><br>
-                    or return to <a href="../homepage.html">Home</a><br><br></p>
-
-                    </div>
+    <div style="position: relative;">
+        <div class="container">
+            <div id="logo" class="box1">                    
+                <img src="assets/logoo.jpeg" width="300px" height="380px">
+            </div>
+            <div id="box" class="box1">                
+                <div class="form">
+                <p style="margin-top:80px">You have been successfully  <br><br>
+                logged out of your account.<br><br>
+                Click here to <a href="logIn.php">Login</a><br><br>
+                or return to <a href="../homepage.html">Home</a><br><br></p>
+                </div>
+            </div>                       
+        </div>
     </div>
-
-                    
-                      
-</div>
-
-</div>
 <?php
 session_destroy();
 ?>

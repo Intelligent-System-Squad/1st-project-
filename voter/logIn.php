@@ -156,23 +156,21 @@
     <div style="position: absolute;width: 100%;">
       <div style="text-align:center ;background-color: #0C0C1C; color: #FFFFFF; ">
         <P style=" font-size: 25px;
-font-weight: bolder; 
-text-align: center;"> VOTER LOGIN</P>
+        font-weight: bolder; 
+        text-align: center;"> VOTER LOGIN</P>
       </div>
    
-      <div style="background-color: #D49FE7; height: 400px; width: 500px; display: flex;
-justify-content: center;
-align-items: center; margin-left: 480px; margin-top: 100px; border-radius: 20px;">
+      <div style="background-color: #D49FE7; height: 400px; width: 500px; display: flex; justify-content: center;
+        align-items: center; margin-left: 480px; margin-top: 100px; border-radius: 20px;">
         <div class="login-wrapper">
           <!-- logIn form -->
         <form name="form1" method="post" action="checklogin.php" onSubmit="return loginValidate(this)" class="form">
-
             <div class="input-group">
-              <input type="text" name="myusername" name="myusername" required />
+              <input type="text" name="myusername" id="myusername" required />
               <label for="username">User Name or Email</label>
             </div>
             <div class="input-group">
-              <input type="password" name="mypassword" name="mypassword"  />
+              <input type="password" name="mypassword" id="mypassword" required/>
               <label for="psw">Password</label>
             </div>
             <input type="submit" name="Submit" value="Login" class="submit-btn" />

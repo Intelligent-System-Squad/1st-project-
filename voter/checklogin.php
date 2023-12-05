@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Simple PHP Polling System Access Denied</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Electoral Poll: Check Login</title>
 <style>
 .topic{
   color: #FFFFFF; 
   text-align:center;
   
 }
-
 .container{
-  position: absolute;
-    
+  position: absolute;    
 }
 
 #logo{            
@@ -58,20 +56,20 @@ ini_set ("display_errors", "1");
 error_reporting(E_ALL);
 
 ob_start();
-session_start();
+session_start();//creates a unique session id for the user and stores it in a cookie
 require('../connection.php');
 
 
 //We insert the login email and password into variables
 $myusername=$_POST['myusername'];
 $mypassword=$_POST['mypassword'];
-$encrypted_mypassword=md5($mypassword); //Encrypt password
+$encrypted_mypassword=md5($mypassword); //Encrypt the password
 
-// This protects from sql injections
+// To protect from sql injections
 $myusername = stripslashes($myusername);
 $mypassword = stripslashes($mypassword);
 
-
+ 
 $sql=mysqli_query($con, "SELECT * FROM tbmembers WHERE email='$myusername' and password='$encrypted_mypassword'");
 
 // Checking for a match in the member/voter table 
@@ -90,23 +88,22 @@ else {
   echo
   "<div class='container'>
     <div id='logo' class='box1'>                      
-                      <img src='assets/logoo.jpeg' width='300px' height='380px'>
-                      </div>
-                      <div id='box' class='box1'>                       
-                      <div class='form'>
-                      <p style='margin-top:60px'>Dear User, <br><br><br>
-                        You have entered a wrong email<br><br>
-                         or password. Please re-enter<br><br>
-                         your email or password correctly.<br><br>
-                         Return to <a href='logIn.php'>LogIn</a><br><br>
-                         Visit <a href='../homepage.html'> Home</a></p>  
-                      </div>
-      </div>                     
-                        
+    <img src='assets/logoo.jpeg' width='300px' height='380px'>
+    </div>
+    <div id='box' class='box1'>                       
+      <div class='form'>
+      <p style='margin-top:60px'>Dear User, <br><br><br>
+        You have entered a wrong email<br><br>
+        or password. Please re-enter<br><br>
+        your email or password correctly.<br><br>
+        Return to <a href='logIn.php'>LogIn</a><br><br>
+        Visit <a href='../homepage.html'> Home</a></p>  
+      </div>
+    </div>                       
   </div>";
 }
 
-ob_end_flush();
+ob_end_flush();// To close output buffer
 
 ?> 
 </div>

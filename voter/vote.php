@@ -7,12 +7,9 @@ if(empty($_SESSION['member_id'])){
  header("location:access-denied.php");
 }
 
-?>
-<?php
 // Getting all the positions where the status of the position is active. This means the voter can view only the active positions. 
 $positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'");
-?> 
-<?php
+
 //This is used to check whether the button with name 'submit' is clicked.
  if (isset($_POST['Submit']))
  {
@@ -30,8 +27,8 @@ $positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'"
 ?>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Current Polls - Electoral Poll</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Electoral Poll-Current Polls</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;
@@ -96,13 +93,18 @@ $positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'"
     
     }
     #candidatebutton{
-        background-color: #504F4F;
-        border-radius: 5px;     
-        padding: 6px 25px;
-        font-weight: bold;
-        font-size: 14px;
-        color:#FFFF;
+      background-color: #504F4F;
+      border-radius: 5px;     
+      padding: 6px 25px;
+      font-weight: bold;
+      border:none;
+      font-size: 14px;
+      color:#FFFF;
       }
+     #candidatebutton:hover{
+      background-color: #0C0C1C;
+      color:#FFFF;
+     }  
 
     .card {
       background-color: #0C0C1C;
@@ -195,152 +197,142 @@ $positions=mysqli_query($con, "SELECT * FROM tbPositions WHERE status ='Active'"
 <script type="text/javascript">
 function getVote(candname)
 {
-if (window.XMLHttpRequest)
+  //To interact with the server and make asynchronous requests
+if (window.XMLHttpRequest)//Checks whether the browser supports the standard XMLHttpRequest object 
   {
-  xmlhttp=new XMLHttpRequest();
+  xmlhttp=new XMLHttpRequest();//If so it creates the instance of the XMLHttpRequest
   }
 else
   {
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");//If it does not support it goes to older version ActiveXobject 
   }
 
-	if(confirm("Your vote is for "+candname))
+	if(confirm("Your vote is for "+candname))//Alert to confirm vote 
 	{
-  var votedposition=document.getElementById("str").value;
-  var id=document.getElementById("hidden").value;
-  xmlhttp.open("GET","save.php?vote="+candname+"&voter_id="+id+"&position="+votedposition,true);
+    //If vote is confirmed
+  var votedposition=document.getElementById("str").value;//The hidden stored position selected by user
+  var id=document.getElementById("hidden").value;//The hidden logged in voter id
+  xmlhttp.open("GET","save.php?vote="+candname+"&voter_id="+id+"&position="+votedposition,true);//sets and sends asynchronous GET request to the server-side script save.php
   xmlhttp.send();
 
-  xmlhttp.onreadystatechange =function()
+  xmlhttp.onreadystatechange =function()//Callback function to handle server's response
 {
-	if(xmlhttp.readyState ==4 && xmlhttp.status==200)
+	if(xmlhttp.readyState ==4 && xmlhttp.status==200)//Check whether if the request is complete and successful
 	{ 
-	document.getElementById("error").innerHTML=xmlhttp.responseText;
+	document.getElementById("error").innerHTML=xmlhttp.responseText;//Updates the element with the id error with the response received from the save.php server 
 	}
 }
 
   }
 	else
 	{
-	alert("Choose another candidate ");
+	alert("Choose another candidate ");//If user clicks cancel in the confirm dialog
 	}
 	
 }
 
 function getPosition(String)
 {
-if (window.XMLHttpRequest)
+if (window.XMLHttpRequest)//Checks whether the browser supports the standard XMLHttpRequest object 
   {
-  xmlhttp=new XMLHttpRequest();
+  xmlhttp=new XMLHttpRequest();//If so it creates the instance of the XMLHttpRequest
   }
 else
   {
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");//If it does not support it goes to older version ActiveXobject 
   }
 
-xmlhttp.open("GET","vote.php?position="+String,true);
+xmlhttp.open("GET","vote.php?position="+String,true);//open a get request to be sent to vote.php where the position is set to string
 xmlhttp.send();
 }
 </script>
-
 </head>
-
 <body style="background-color: #B6AAAA;">
-
+<!--side navigation bar-->
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="voter.php">Home</a>
   <a href="vote.php">Current Polls</a>
   <a href="manage-profile.php">Manage My Profile</a>
-  <a href="changepass.php">Change Password</a>
-  
-  
+  <a href="changepass.php">Change Password</a>  
 </div>
 <span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px; margin-left:20px;" onclick="openNav()">&#9776; </span>
+<!--to get information about the voter who has logged in and to display their name and image in top-->
 <?php
   $query= mysqli_query($con,"SELECT * FROM tbmembers WHERE member_id ='$_SESSION[member_id]'") or die (mysqli_error());
   $fetch = mysqli_fetch_array($query);
-      ?>
-      <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
-      <?php 
-				echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
-  
+ ?>
+  <div class="line" id ="propic"><img src="../admin/img/<?php echo $fetch["image"]; ?>" width = 80 height =80 style ='border-radius : 50%;' title="<?php echo $fetch['image']; ?>"></div>
+  <?php 
+    echo "<h1 style='margin-left:300px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";  
   ?>
+  <!--logout button-->
+  <a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
+  </div>
 
- 
-<a href="logout.php"><button class="line" id="buttons" style="margin-left:300px ;margin-top:20px">Log Out</button></a>
+<div style="background-color: #B6AAAA; height: 700px; position: relative;"> 
+  <div class="container">
+    <div class="space1"></div>
+      <table width="460px" align="center">
+      <CAPTION><div class="oneline"><p>CHOOSE POSITION</p></div></CAPTION>
+      <!--form to view candidates to vote-->
+        <form name="fmNames" id="fmNames" method="post" action="vote.php" onSubmit="return positionValidate(this)">  
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>    
+          <td><SELECT class="labels" NAME="position" id="position" onclick="getPosition(this.value)">
+          <OPTION VALUE="select" >select
+            <?php 
+              //loop through all rows of the table
+              while ($row=mysqli_fetch_array($positions)){
+              echo "<OPTION VALUE=$row[position_name]>$row[position_name]";     
+              }
+              ?>
+            </SELECT></td>
 
-</div>
+          <td><input type="hidden" id="hidden" value="<?php echo $_SESSION['member_id']; ?>" /></td><!-- Hidden and stores the voter id whose performing the vote-->  
+          <td><input type="hidden" id="str" value="<?php echo $_REQUEST['position']; ?>" /></td><!-- Hidden and stores the position for which the vite is performed-->
+          <td><button type="submit" name="Submit" id="candidatebutton">See Candidates</button></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td> 
+            <td>&nbsp;</td>
+        </tr>
+        </form> 
+      </table>
+      <hr class="hr1">
 
+      <div class="oneline"> <p class='lin' >
+              Candidates&nbsp<?php if(isset($_POST['Submit'])){ echo "<p class='lin'> of " . $posi['position_name'] . "&nbspPosition</p>"; }?>
+      </p>
+      </div>
 
-
-<div style="background-color: #B6AAAA; height: 700px; position: relative;">
- <div class="refresh">
-</div> 
-<div class="container">
-  <div class="space1"></div>
-<table width="460px" align="center">
-<CAPTION><div class="oneline"><p>CHOOSE POSITION</p></div></CAPTION>
-
-<form name="fmNames" id="fmNames" method="post" action="vote.php" onSubmit="return positionValidate(this)">
+      <center><span id="error"></span></center>
   
-<tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr>    
-    <td><SELECT class="labels" NAME="position" id="position" onclick="getPosition(this.value)">
-    <OPTION VALUE="select" >select
-    <?php 
-    //loop through all rows of the table
-    while ($row=mysqli_fetch_array($positions)){
-    echo "<OPTION VALUE=$row[position_name]>$row[position_name]";     
-    }
-    ?>
-    </SELECT></td>
+      <?php
+      //loop through all table rows
+        if (isset($_POST['Submit']))
+        {
+      while ($row=mysqli_fetch_array($result)){
+      echo "<div class='card'>";?>
+      <img src="../admin/img/<?php echo $row["image"]; ?>" width = 250 height = 200 title="<?php echo $row['image']; ?>">
+      <?php
+      echo "<h3 style='color:#FFFF';>" . $row['candidate_name']."</h3>";
+      echo "<button class='votes' name='vote' value='$row[candidate_name]' onclick='getVote(this.value)'> Vote </button>";
+      echo "</div>";
+      }
+      mysqli_free_result($result);
+      mysqli_close($con);
 
-    <td><input type="hidden" id="hidden" value="<?php echo $_SESSION['member_id']; ?>" /></td><!-- Hidden and stores the voter id whose performing the vote-->  
-    <td><input type="hidden" id="str" value="<?php echo $_REQUEST['position']; ?>" /></td><!-- Hidden and stores the position for which the vite is performed-->
-    <td><button type="submit" name="Submit" id="candidatebutton">See Candidates</button></td>
-</tr>
-<tr>
-    <td>&nbsp;</td> 
-    <td>&nbsp;</td>
-</tr>
-</form> 
-</table>
-<hr class="hr1">
-
-<div class="oneline"> <p class='lin' >
-        Candidates&nbsp<?php if(isset($_POST['Submit'])){ echo "<p class='lin'> of " . $posi['position_name'] . "&nbspPosition</p>"; }?>
-    </p></div>
-
-<center><span id="error"></span></center>
-  
-<?php
-//loop through all table rows
-  if (isset($_POST['Submit']))
-  {
-while ($row=mysqli_fetch_array($result)){
-echo "<div class='card'>";?>
-<img src="../admin/img/<?php echo $row["image"]; ?>" width = 250 height = 200 title="<?php echo $row['image']; ?>">
-<?php
-echo "<h3 style='color:#FFFF';>" . $row['candidate_name']."</h3>";
-echo "<button class='votes' name='vote' value='$row[candidate_name]' onclick='getVote(this.value)'> Vote </button>";
-echo "</div>";
-}
-mysqli_free_result($result);
-mysqli_close($con);
-
- }
-else
-
-?>
-
-
-</div>
-</div>
+      }
+      else
+      //Do nothing
+      ?>
+    </div>
+  </div>
 </div>
 
 
