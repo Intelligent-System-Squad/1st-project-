@@ -194,34 +194,40 @@ $myLastName = addslashes( $_POST['lastname'] ); //prevents SQL injection
 $myEmail = addslashes($_POST['email']); //prevents SQL injection
 $myPassword = addslashes($_POST['password']); //prevents SQL injection
 $newpass = md5($myPassword); //This will make your password encrypted into md5 which is secure hash
-$emailCheckQuery = "SELECT COUNT(*) as count FROM tbadministrators WHERE email = '$myEmail'";//Check uniqueness of email
-$emailCheckResult = mysqli_query($con, $emailCheckQuery);
-$emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
-if ($emailCount > 0) {
-  // Email is not unique      
-  echo "<script>alert('Email address is not unique. Please choose a different email.');</script>"; 
-}else{  
+$pattern = "@ousl.lk";
+    if (substr($myEmail, -strlen($pattern)) !== $pattern) {
+        // Email doesn't end with the desired pattern
+        echo "<script>alert('Email address must end with $pattern. Please enter a valid email.');</script>";
+    } else {
+        $emailCheckQuery = "SELECT COUNT(*) as count FROM tbadministrators WHERE email = '$myEmail'";//Check uniqueness of email
+        $emailCheckResult = mysqli_query($con, $emailCheckQuery);
+        $emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
+        if ($emailCount > 0) {
+        // Email is not unique      
+        echo "<script>alert('Email address is not unique. Please choose a different email.');</script>"; 
+        }else{  
 
-$sql = mysqli_query($con, "INSERT INTO tbadministrators(first_name, last_name, email,password) 
-VALUES ('$myFirstName','$myLastName', '$myEmail', '$newpass') "); //inserting values into database
+        $sql = mysqli_query($con, "INSERT INTO tbadministrators(first_name, last_name, email,password) 
+        VALUES ('$myFirstName','$myLastName', '$myEmail', '$newpass') "); //inserting values into database
 
-die( "<body bgcolor=#B6AAAA><div class='container' >
-<div id='logo' class='box1'>                
-    <img src='assets/logoo.jpeg' width='300px' height='380px'>
-    </div>
-    <div id='bo' class='bo1'>               
-    <div class='formm'>
-    <p style='margin-top:60px'>Dear User, <br><br><br>
-        You have successfully created<br><br>
-        an admin account. Please <a href='logIn.php'>login</a><br><br>
-        to get access to your privileges.<br><br>
-        </p>
-    </div>
-</div>                   
-</div>
-</body>"
-);
-}
+        die( "<body bgcolor=#B6AAAA><div class='container' >
+        <div id='logo' class='box1'>                
+            <img src='assets/logoo.jpeg' width='300px' height='380px'>
+            </div>
+            <div id='bo' class='bo1'>               
+            <div class='formm'>
+            <p style='margin-top:60px'>Dear User, <br><br><br>
+                You have successfully created<br><br>
+                an admin account. Please <a href='logIn.php'>login</a><br><br>
+                to get access to your privileges.<br><br>
+                </p>
+            </div>
+        </div>                   
+        </div>
+        </body>"
+        );
+        }
+    }
 }
 ?>
 <!--registration form-->
