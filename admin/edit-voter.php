@@ -60,6 +60,7 @@ header("Location: voters.php");
 ?>
 
  <html><head>
+ <title>Electoral Poll: Edit Voter</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;

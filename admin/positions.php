@@ -106,6 +106,7 @@ header("Location: positions.php");
 ?>
 <!DOCTYPE html>
 <head>
+<title>Electoral Poll: Manage Positions</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Electoral Poll: Manage Positions</title>
 

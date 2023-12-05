@@ -51,6 +51,7 @@ header("Location: candidates.php");
 
 <html>
   <head>
+  <title>Electoral Poll: Edit Candidate</title>
     <style>
         .mainnav {
           background-color: #0C0C1C;
