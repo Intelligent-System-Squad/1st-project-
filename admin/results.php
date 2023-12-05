@@ -148,6 +148,10 @@ if(empty($_SESSION['admin_id'])){
       font-size: 14px;
       color:#FFFF;
     }
+    #addbutton:hover{
+      background-color: #0C0C1C;
+      color:#FFFF;
+    }
     .space {
       width: 20px;
       height: auto;
