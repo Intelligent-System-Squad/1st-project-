@@ -147,9 +147,9 @@
           height: 3px;
         }  
 
-    </style>
-  </head>
-    <title>Ekectoral Poll: Change Admin Password</title>
+    </style>  
+    <title>Electoral Poll: Change Admin Password</title>
+    </head>
     <body style="background-color: #B6AAAA;" >
     <div >
     <!--Side navigation bar-->

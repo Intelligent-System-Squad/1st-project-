@@ -16,16 +16,22 @@ $myId = addslashes( $_GET['id']);
 $myFirstName = addslashes( $_POST['firstname'] ); //prevents types of SQL injection
 $myLastName = addslashes( $_POST['lastname'] ); //prevents types of SQL injection
 $myEmail = $_POST['email'];
-$emailCheckQuery = "SELECT COUNT(*) as count FROM tbAdministrators WHERE email = '$myEmail' AND admin_id <> '$myId'";//Check uniqueness of email
-$emailCheckResult = mysqli_query($con, $emailCheckQuery);
-$emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
-if ($emailCount > 0) {
-  // Email is not unique      
-  echo "<script>alert('Email address is not unique. Please choose a different email.');</script>"; 
-}else{ 
-//get the new information from the update from and update the table
-$sql = mysqli_query($con, "UPDATE tbAdministrators SET first_name='$myFirstName', last_name='$myLastName', email='$myEmail' WHERE admin_id = '$myId'" );
-}
+$pattern = "@ousl.lk";
+    if (substr($myEmail, -strlen($pattern)) !== $pattern) {
+        // Email doesn't end with the desired pattern
+        echo "<script>alert('Email address must end with $pattern. Please enter a valid email.');</script>";
+    } else {
+        $emailCheckQuery = "SELECT COUNT(*) as count FROM tbAdministrators WHERE email = '$myEmail' AND admin_id <> '$myId'";//Check uniqueness of email
+        $emailCheckResult = mysqli_query($con, $emailCheckQuery);
+        $emailCount = mysqli_fetch_assoc($emailCheckResult)['count'];
+        if ($emailCount > 0) {
+          // Email is not unique      
+          echo "<script>alert('Email address is not unique. Please choose a different email.');</script>"; 
+        }else{ 
+        //get the new information from the update from and update the table
+        $sql = mysqli_query($con, "UPDATE tbAdministrators SET first_name='$myFirstName', last_name='$myLastName', email='$myEmail' WHERE admin_id = '$myId'" );
+        }
+    }
 }
 
 //fetching the details of the admin who is logged in 
@@ -44,6 +50,7 @@ if($row)
  }
 ?>
 <html><head>
+<title>Electoral Poll: Manage Admin</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;

@@ -1,6 +1,7 @@
 <html>
 <head>
   <script language="JavaScript" src="js/admin.js"></script>
+  <title>Electoral Poll: Admin LogIn</title>
   <style>
       .mainnav {
           background-color: #0C0C1C;

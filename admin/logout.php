@@ -42,7 +42,7 @@
             color:#D49FE7;
         }
 </style>
-
+<title>Electoral Poll: Admin LogOut</title>
 </head>
 <body style="background-color: #B6AAAA; auto;">
     <div style="position: relative;">

@@ -2,9 +2,7 @@
 <head>
 <script language="JavaScript" src="js/admin.js">
 </script>
-<title>
-        Admin Registration
-    </title>
+<title>Electoral Poll: Admin Registration</title>
     <style>
     .mainnav {
         background-color: #0C0C1C;
@@ -193,7 +191,7 @@ $myFirstName = addslashes( $_POST['firstname'] ); //prevents SQL injection
 $myLastName = addslashes( $_POST['lastname'] ); //prevents SQL injection
 $myEmail = addslashes($_POST['email']); //prevents SQL injection
 $myPassword = addslashes($_POST['password']); //prevents SQL injection
-$newpass = md5($myPassword); //This will make your password encrypted into md5 which is secure hash.
+$newpass = md5($myPassword); //This will make your password encrypted into md5 which is secure hash
 $pattern = "@ousl.lk";
     if (substr($myEmail, -strlen($pattern)) !== $pattern) {
         // Email doesn't end with the desired pattern
