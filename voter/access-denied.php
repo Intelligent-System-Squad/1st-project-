@@ -1,7 +1,7 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+ <!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Electoral Poll: Access Denied</title>
 <style>
     .mainnav {
@@ -9,8 +9,7 @@
       overflow: hidden;
       display: inline-block;
       width: 100%;
-      height:75px;
-    
+      height:75px;    
     }
 
     #buttons {
@@ -116,48 +115,37 @@
 </style>
 </head>
 <body style="background-color: #B6AAAA;">
-<div >
-
+<div>
+<!--side navbar-->
 <div class="mainnav">
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="student.php">Home</a>
-  <a href="vote.php">Current Polls</a>
-  <a href="manage-profile.php">Manage My Profile</a>
-  <a href="changepass.php">Change Password</a>
-  
-  
-</div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px;margin-left:20px" onclick="openNav()">&#9776;</span>
-<a href="logout.php"><button class="line" id="buttons" style="margin-left:1000px ;margin-top:20px">Log Out</button></a>
-
-</div>
-
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="student.php">Home</a>
+    <a href="vote.php">Current Polls</a>
+    <a href="manage-profile.php">Manage My Profile</a>
+    <a href="changepass.php">Change Password</a> 
+  </div>
+<!--logout button-->
+    <span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px;margin-left:20px" onclick="openNav()">&#9776;</span>
+    <a href="logout.php"><button class="line" id="buttons" style="margin-left:1000px ;margin-top:20px">Log Out</button></a>
+  </div>
 </div>
 <div style="height: 700px; position: relative;">
-<div class="container" >
-<div id="logo" class="box1">
-                    
-                    <img src="assets/logoo.jpeg" width="300px" height="380px">
-                    </div>
-                    <div id="box" class="box1">                   
-                    
-                    
-                    <div class="form">
-                    <h2 style="margin-top:60px"> ACCESS DENIED!</h2><br>
-                    <p>Dear Voter, <br><br>
-                      You are not currently logged in.<br><br>
-                      <a href="logIn.php">Click here </a> to login first<br><br>
-                       to get access to the privileges<br><br>
-                       of a voter.<br><br></p>
-
-                    </div>
+  <div class="container">
+    <div id="logo" class="box1">                    
+      <img src="assets/logoo.jpeg" width="300px" height="380px">
     </div>
-
-                    
-                      
-</div>
-
+    <div id="box" class="box1">                   
+      <div class="form">
+        <h2 style="margin-top:60px"> ACCESS DENIED!</h2><br>
+        <p>Dear Voter, <br><br>
+        You are not currently logged in.<br><br>
+        <a href="logIn.php">Click here </a> to login first<br><br>
+        to get access to the privileges<br><br>
+        of a voter.<br><br></p>
+      </div>
+    </div>                     
+  </div>
 </div>
 </div>
  
