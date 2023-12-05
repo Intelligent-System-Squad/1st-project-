@@ -15,26 +15,25 @@ if (mysqli_num_rows($result)<1){
 //inserting positions
 if (isset($_POST['Submit']))
 {
-
+//gets the position inserted through form
 $newPosition = addslashes( $_POST['position'] ); //prevents SQL injection
 //setting the starting and ending date of the position elections
 $starting_date = mysqli_real_escape_string($con, $_POST['starting_date']);
 $ending_date = mysqli_real_escape_string($con, $_POST['ending_date']);
 $inserted_on = date("Y-m-d");
 
-        $date1=date_create($inserted_on);
-        $date2=date_create($starting_date);
-        $diff=date_diff($date1,$date2);
-        ;
+$date1=date_create($inserted_on);
+$date2=date_create($starting_date);
+$diff=date_diff($date1,$date2);
         
-        //setting whether the election is active or inactive
-        if((int)$diff->format("%R%a") > 0)
-        {
-            $status = "InActive";
-        }else {
-            $status = "Active";
-        }
-
+//setting whether the election is active or inactive
+if((int)$diff->format("%R%a") > 0)
+{
+    $status = "InActive";
+}else {
+    $status = "Active";
+}
+//Insert all the values entered in form into position table
 $sql = mysqli_query($con, "INSERT INTO tbpositions (position_name,starting_date, ending_date, status, inserted_on) VALUES ('$newPosition', '$starting_date', '$ending_date', '$status', '$inserted_on')");
 
 // go to positions page
@@ -54,7 +53,7 @@ header("Location: positions.php");
         $position_id = $data['position_id'];
         $status = $data['status'];
 
-        //setting if the election date is expired    
+        //setting if the election date is expired   
 
         if($status == "Active")
         {
@@ -78,7 +77,7 @@ header("Location: positions.php");
 
             if((int)$diff->format("%R%a") <= 0)
             {
-                
+               //Updating election status 
                 mysqli_query($con, "UPDATE tbpositions SET status = 'Active' WHERE position_id = '". $position_id ."'") OR die(mysqli_error($con));
             }
         }
@@ -107,7 +106,7 @@ header("Location: positions.php");
 ?>
 <!DOCTYPE html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Electoral Poll: Manage Positions</title>
 
 <script language="JavaScript" src="js/admin.js">
@@ -142,61 +141,59 @@ header("Location: positions.php");
       width:240px;
     }
     .sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #0C0C1C;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-}
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #0C0C1C;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    .sidenav a {
+      padding: 8px 8px 20px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.3s;
+    }
 
-.sidenav a {
-  padding: 8px 8px 20px 32px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #FFFFFF;
-  display: block;
-  transition: 0.3s;
-}
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
 
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    .topic{
+      font-size:20px;
+      font-weight:bold;
+      background-color:#504F4F;
+      color:#FFFF;
+      
+    }
+    p{
+      font-size:18px;
+    }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-.topic{
-  font-size:20px;
-  font-weight:bold;
-  background-color:#504F4F;
-  color:#FFFF;
-  
-}
-p{
-  font-size:18px;
-}
-
-.maintbl  {  
-  border: 1px solid #504F4F;
-  text-align: left;
-  background-color:#FFFF;
-  
-}
-footer{
+    .maintbl  {  
+      border: 1px solid #504F4F;
+      text-align: left;
+      background-color:#FFFF;      
+    }
+    footer{
         background-color: #0C0C1C;
         width: 100%;
         text-align:center;
@@ -205,44 +202,57 @@ footer{
         margin-top:80px;
       }
 
-.maintbl {
-  border-collapse: collapse;
-  
-}
-.maintbl th, .maintbl td{  
-  padding: 10px;
-  border: 1px solid #504F4F;
-}
-.delete{
-  background-color: #D49FE7;
+    .maintbl {
+      border-collapse: collapse;      
+    }
+    .maintbl th, .maintbl td{  
+      padding: 10px;
+      border: 1px solid #504F4F;
+    }
+    .delete{
+      background-color: #D49FE7;
       border-radius: 5px;     
       padding: 6px 22px;
       font-weight: bold;
       font-size: 14px;
-      color:#0C0C1C;  
-
-}
-a{
-  text-decoration:none;
-  color:#0C0C1C;
-  
-}
-hr.line1{
-  border-top: 2px solid #0C0C1C;
-}
-hr.line2{
-  border-top: 2px solid #0C0C1C;
-}
-h1{
-color:#FFFF;
-}
-.line{
-float:left;
-}
-.hr1{
-  background-color: #0C0C1C;
-  height: 3px;
-}  
+      color:#0C0C1C;
+    }
+    a{
+      text-decoration:none;
+      color:#0C0C1C;      
+    }
+    hr.line1{
+      border-top: 2px solid #0C0C1C;
+    }
+    hr.line2{
+      border-top: 2px solid #0C0C1C;
+    }
+    h1{
+    color:#FFFF;
+    }
+    .line{
+    float:left;
+    }
+    .hr1{
+      background-color: #0C0C1C;
+      height: 3px;
+    }  
+    .oneline{
+      display: flex;
+      background: rgb(201,104,195);
+      background: linear-gradient(90deg, rgba(201,104,195,1) 57%, rgba(212,159,231,1) 79%, rgba(201,181,203,1) 100%);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);  
+      justify-content:center;
+      align-items: center;
+      text-align: center; 
+      margin: 0 auto;
+      font-size:20px;
+      font-weight:bolder;  
+      color:#0C0C1C; 
+    }
+    .space1{
+      height: 30px;
+    }
 
 </style>
 </head>
@@ -256,7 +266,7 @@ float:left;
 <a href="voters.php">Manage Voters</a>
 <a href="positions.php">Manage Positions</a>
 <a href="candidates.php">Manage Candidates</a>
-<a href="refresh.php">Poll Results</a>
+<a href="results.php">Poll Results</a>
 <a href="manage-admins.php">Manage Account</a>
 <a href="change-pass.php">Change Password</a>
 </div>
@@ -266,7 +276,7 @@ float:left;
 $query= mysqli_query($con,"SELECT * FROM tbadministrators WHERE admin_id ='$_SESSION[admin_id]'") or die (mysqli_error());
 $fetch = mysqli_fetch_array($query);
 // Displaying the name of the admin whose logged , in the top bar
-      echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
+echo "<h1 style='margin-left:500px;' class='line'> Welcome,&nbsp&nbsp <h1 class='line'>".$fetch['first_name']."</h1><h1 class='line'>!</h1></h1>";
 ?>
 
 <!--logout button-->
@@ -275,13 +285,14 @@ $fetch = mysqli_fetch_array($query);
 </div>
 <div style="background-color: #B6AAAA; height: 800px; position: relative;">
 <div id="container">
+<div class="space1"></div>
+<!--Add position form-->
 <table width="460px" align="center">
-<CAPTION><p class="topic">ADD NEW POSITION</p></CAPTION>
+<CAPTION><div class="oneline"><p>ADD NEW POSITION</p></div></CAPTION>
 <form name="fmPositions" id="fmPositions" action="positions.php" method="post" onsubmit="return positionValidate(this)">
 <tr>
     <td><p>Position Name<p></td>
-    <td><input type="text" name="position" required/></td>
-    
+    <td><input type="text" name="position" required/></td>    
 </tr>
 <tr>
     <td><p>Starting Date<p></td>
@@ -297,9 +308,9 @@ $fetch = mysqli_fetch_array($query);
 </table>
 
 <hr class="hr1">
-
+<!--Table showing added positions-->
 <table class="maintbl" width="760px" align="center">
-<CAPTION><p class="topic">POSITION LIST</p></CAPTION>
+<CAPTION><div class="oneline"><p>POSITION LIST</p></div></CAPTION>
 <tr>
 
 <th>Position Name</th>

@@ -1,17 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Electoral Poll: Access Denied</title>
 <style>
     .mainnav {
       background-color: #0C0C1C;
       overflow: hidden;
-      margin-left: 10cm;
-      margin-left: 30px;
       display: inline-block;
-      height: 80px;
-     
+      width: 100%;
+      height:75px;        
     }
     #buttons {
       background-color: #D49FE7;
@@ -46,7 +44,6 @@
       transition: 0.5s;
       padding-top: 60px;
     }
-
     .sidenav a {
       padding: 8px 8px 20px 32px;
       text-decoration: none;
@@ -86,6 +83,11 @@
         margin-top: 100px; 
         margin-left:150px;          
     }
+
+    .line{
+      float:left;
+    }
+
     #box{
         background-color: #D49FE7;
         height: 450px;
@@ -113,26 +115,29 @@
     }
 </style>
 </head>
-<body>
-<div style="background-color: #0C0C1C;">
+<body style="background-color: #B6AAAA;">
+<div >
 
+<!--Side navigation bar-->
 <div class="mainnav">
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="admin.php">Home</a>
   <a href="positions.php">Manage Positions</a>
   <a href="candidates.php">Manage Candidates</a>
-  <a href="refresh.php">Poll Results</a>
+  <a href="results.php">Poll Results</a>
   <a href="manage-admins.php">Manage Account</a>
-  <a href="change-pass.php">Change Password</a>
+  <a href="change-pass.php">Change Password</a>  
 </div>
-<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px" onclick="openNav()">&#9776; </span>
+
+<!--Navigation bar--> 
+<span class="line" style="font-size:30px;cursor:pointer;color:#FFFF; margin-top:20px;margin-left:20px" onclick="openNav()">&#9776; </span>
 <a href="logout.php"><button class="line" id="buttons" style="margin-left:1000px ;margin-top:20px">Log Out</button></a>
-
 </div>
 
-<div style="background-color: #B6AAAA; height: 700px; position: relative;">
-<div class="container" >
+<div style="height: 700px; position: relative;">
+<!--Access Denied Box-->
+<div class="container">
   <div id="logo" class="box1">
     <img src="assets/logoo.jpeg" width="300px" height="380px">
   </div>
